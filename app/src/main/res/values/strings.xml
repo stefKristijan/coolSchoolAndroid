@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Cool School</string>
+
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="tv_login">Prijava</string>
+    <string name="et_username">Korisničko ime</string>
+    <string name="et_password">Lozinka</string>
+    <string name="btn_login">Prijava</string>
+    <string name="tv_no_account">Nemate račun?</string>
+    <string name="tv_register">Registracija</string>
+    <string name="btn_teacher_register">Učitelj/ica</string>
+    <string name="btn_student_register">Učenik/ca</string>
+</resources>
