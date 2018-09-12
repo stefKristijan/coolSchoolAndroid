@@ -1,9 +1,10 @@
 package hr.ferit.coolschool.model;
 
 
+import java.io.Serializable;
 import java.util.Set;
 
-public class School {
+public class School implements Serializable{
 
     private Integer schoolId;
     private String name;

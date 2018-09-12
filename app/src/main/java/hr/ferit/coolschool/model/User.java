@@ -1,15 +1,19 @@
 package hr.ferit.coolschool.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
 
 
-public class User {
+public class User implements Serializable{
 
     private Long userId;
     private String username;
     private String password;
     private String email;
+    @JsonFormat(pattern = "dd.MM.yyyy.")
     private Date dob;
     private String firstName;
     private String lastName;

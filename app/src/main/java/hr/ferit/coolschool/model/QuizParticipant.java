@@ -1,7 +1,8 @@
 package hr.ferit.coolschool.model;
 
+import java.io.Serializable;
 import java.util.Set;
-public class QuizParticipant {
+public class QuizParticipant implements Serializable{
     private Long participantId;
     private Float sumPoints;
     //time in seconds

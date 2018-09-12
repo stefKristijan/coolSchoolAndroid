@@ -1,8 +1,9 @@
 package hr.ferit.coolschool.model;
 
+import java.io.Serializable;
 import java.util.Set;
 
-public class Answer {
+public class Answer implements Serializable{
 
     private Long answerId;
     private String answer;
