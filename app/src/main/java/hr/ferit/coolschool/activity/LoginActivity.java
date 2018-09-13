@@ -55,6 +55,26 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
+        this.btnStudentReg = findViewById(R.id.login_btn_student_reg);
+        this.btnStudentReg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startRegistrationActivity(true);
+            }
+        });
+        this.btnTeacherReg = findViewById(R.id.login_btn_teacher_reg);
+        this.btnTeacherReg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startRegistrationActivity(false);
+            }
+        });
+    }
+
+    private void startRegistrationActivity(boolean isStudent) {
+        Intent registerIntent = new Intent(this, RegistrationActivity.class);
+        registerIntent.putExtra("isStudent", isStudent);
+        startActivity(registerIntent);
     }
 
     private void login(String username, String password) {

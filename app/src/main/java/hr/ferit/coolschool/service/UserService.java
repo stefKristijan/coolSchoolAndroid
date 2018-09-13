@@ -3,6 +3,7 @@ package hr.ferit.coolschool.service;
 import hr.ferit.coolschool.model.User;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -17,4 +18,7 @@ public interface UserService {
 
     @GET("/auth")
     Call<User> authenticatedUser(@Header("Cookie") String cookie);
+
+    @POST("/api/users/registration")
+    Call<User> registration(@Body User user);
 }
