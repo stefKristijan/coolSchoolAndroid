@@ -1,5 +1,6 @@
 package hr.ferit.coolschool.utils;
 
+import hr.ferit.coolschool.service.SchoolService;
 import hr.ferit.coolschool.service.UserService;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
@@ -10,6 +11,7 @@ public class RetrofitImpl {
     private static final String BASE_URL = "http://192.168.1.105:8080";
     private static Retrofit retrofit;
     private static UserService userService;
+    private static SchoolService schoolService;
 
     public static Retrofit getRetrofitInstance(){
         if(retrofit == null) {
@@ -27,5 +29,12 @@ public class RetrofitImpl {
             userService = getRetrofitInstance().create(UserService.class);
         }
         return userService;
+    }
+
+    public static SchoolService getSchoolService() {
+        if (schoolService == null) {
+            schoolService = getRetrofitInstance().create(SchoolService.class);
+        }
+        return schoolService;
     }
 }

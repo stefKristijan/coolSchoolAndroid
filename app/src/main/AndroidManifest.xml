@@ -28,7 +28,10 @@
             android:name=".activity.LoginActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".activity.MainActivity" />
-        <activity android:name=".activity.RegistrationActivity"></activity>
+        <activity android:name=".activity.RegistrationActivity"
+            android:windowSoftInputMode="adjustPan">
+
+        </activity>
     </application>
 
 </manifest>

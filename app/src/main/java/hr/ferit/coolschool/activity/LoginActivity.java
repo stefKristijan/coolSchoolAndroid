@@ -18,10 +18,11 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static hr.ferit.coolschool.utils.Constants.DEFAULT_ERROR;
+
 public class LoginActivity extends AppCompatActivity {
     //TODO - put link in About or somewhere
 
-    public static final String DEFAULT_ERROR = "Došlo je do pogreške. Pokušajte ponovno kasnije.";
     private static final String EMPTY_FIELDS = "Unesite podatke za prijavu";
     private static final String LOGIN_FAIL = "Pogrešno korisničko ime i/ili lozinka";
     private Button btnLogin, btnStudentReg, btnTeacherReg;

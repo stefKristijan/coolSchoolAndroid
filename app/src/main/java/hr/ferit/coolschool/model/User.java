@@ -1,9 +1,6 @@
 package hr.ferit.coolschool.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 import java.io.Serializable;
-import java.util.Date;
 import java.util.Set;
 
 
@@ -13,21 +10,16 @@ public class User implements Serializable{
     private String username;
     private String password;
     private String email;
-    @JsonFormat(pattern = "dd.MM.yyyy.")
-    private Date dob;
     private String firstName;
     private String lastName;
     private Role role;
 
     private Set<UserSchool> userSchools;
 
-    private Set<QuizParticipant> participants;
-
-    public User(String username, String password, String email, Date dob, String firstName, String lastName, Role role) {
+    public User(String username, String password, String email, String firstName, String lastName, Role role) {
         this.username = username;
         this.password = password;
         this.email = email;
-        this.dob = dob;
         this.firstName = firstName;
         this.lastName = lastName;
         this.role = role;
@@ -43,12 +35,10 @@ public class User implements Serializable{
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
-                ", dob='" + dob + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", role=" + role +
                 ", userSchools=" + userSchools +
-                ", participants=" + participants +
                 '}';
     }
 
@@ -64,7 +54,6 @@ public class User implements Serializable{
         if (password != null ? !password.equals(user.password) : user.password != null)
             return false;
         if (email != null ? !email.equals(user.email) : user.email != null) return false;
-        if (dob != null ? !dob.equals(user.dob) : user.dob != null) return false;
         if (firstName != null ? !firstName.equals(user.firstName) : user.firstName != null)
             return false;
         if (lastName != null ? !lastName.equals(user.lastName) : user.lastName != null)
@@ -78,19 +67,10 @@ public class User implements Serializable{
         result = 31 * result + username.hashCode();
         result = 31 * result + (password != null ? password.hashCode() : 0);
         result = 31 * result + (email != null ? email.hashCode() : 0);
-        result = 31 * result + (dob != null ? dob.hashCode() : 0);
         result = 31 * result + (firstName != null ? firstName.hashCode() : 0);
         result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
         result = 31 * result + role.hashCode();
         return result;
-    }
-
-    public Set<QuizParticipant> getParticipants() {
-        return participants;
-    }
-
-    public void setParticipants(Set<QuizParticipant> participants) {
-        this.participants = participants;
     }
 
     public Set<UserSchool> getUserSchools() {
@@ -131,14 +111,6 @@ public class User implements Serializable{
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public Date getDob() {
-        return dob;
-    }
-
-    public void setDob(Date dob) {
-        this.dob = dob;
     }
 
     public String getFirstName() {

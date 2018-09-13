@@ -1,8 +1,274 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/fl_registration"
-    >
+    android:id="@+id/register_main_layout"
+    tools:context=".activity.RegistrationActivity">
 
-</FrameLayout>
+    <TextView
+        android:id="@+id/reg_tv_heading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textColor="@color/white"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/stroke"
+        app:layout_constraintBottom_toTopOf="@+id/reg_til_name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/reg_tv_heading" />
+
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/reg_til_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/reg_til_username"
+        app:layout_constraintEnd_toStartOf="@+id/reg_til_surname"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/reg_et_name"
+            android:layout_width="218dp"
+            android:layout_height="wrap_content"
+            android:hint="Ime" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/reg_til_surname"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/reg_til_name"
+        app:layout_constraintTop_toTopOf="@+id/reg_til_name">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/reg_et_surname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Prezime" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/reg_til_username"
+        android:layout_width="344dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/reg_til_password"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/reg_til_name">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/reg_et_username"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Korisničko ime" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/reg_til_password"
+        android:layout_width="170dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/reg_til_email"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/reg_til_username">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/reg_et_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Lozinka"
+            android:inputType="textPassword"
+            />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/reg_til_retype_pass"
+        android:layout_width="166dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/reg_til_password"
+        app:layout_constraintTop_toTopOf="@+id/reg_til_password">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/reg_et_retype_pass"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Ponovi lozinku"
+            android:inputType="textPassword"
+            />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/reg_til_email"
+        android:layout_width="344dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/reg_tv_school_info"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/reg_til_password">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/reg_et_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="E-mail"
+            android:inputType="textEmailAddress"
+            />
+    </android.support.design.widget.TextInputLayout>
+
+    <TextView
+        android:id="@+id/reg_tv_school_info"
+        android:layout_width="wrap_content"
+        android:layout_height="24dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Odabir škola"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/view2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/reg_til_email" />
+
+    <View
+        android:id="@+id/view2"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/stroke"
+        app:layout_constraintBottom_toTopOf="@+id/reg_til_school"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/reg_tv_school_info" />
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/reg_til_school"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/reg_school_rv"
+        app:layout_constraintEnd_toStartOf="@+id/reg_til_class"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view2">
+
+        <AutoCompleteTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/reg_actv_schools"
+            android:hint="Pretraži škole" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/reg_til_class"
+        android:layout_width="70dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintEnd_toStartOf="@+id/reg_btn_add_school"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/reg_til_school"
+        app:layout_constraintTop_toTopOf="@+id/reg_til_school">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/reg_et_class_num"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Razred"
+            android:inputType="numberSigned" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/reg_school_rv"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/reg_btn_register"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/reg_til_school" />
+
+    <Button
+        android:id="@+id/reg_btn_register"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:text="@string/tv_register"
+        android:drawableLeft="@drawable/ic_check"
+        android:background="@drawable/button_shape"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/reg_school_rv" />
+
+    <Button
+        android:id="@+id/reg_btn_add_school"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/button_shape"
+        android:drawableStart="@drawable/ic_add_white"
+        android:paddingLeft="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/reg_til_school"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/reg_til_class"
+        app:layout_constraintTop_toTopOf="@+id/reg_til_school" />
+
+</android.support.constraint.ConstraintLayout>
