@@ -23,7 +23,9 @@ import hr.ferit.coolschool.utils.SharedPrefsHelper;
 import static hr.ferit.coolschool.utils.Constants.COOKIE_KEY;
 import static hr.ferit.coolschool.utils.Constants.USER_KEY;
 
-public class DashboardActivity extends AppCompatActivity implements SettingsFragment.OnLogoutListener{
+public class DashboardActivity extends AppCompatActivity
+        implements SettingsFragment.OnLogoutListener,
+        SettingsFragment.OnUserUpdateListener {
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
@@ -87,6 +89,12 @@ public class DashboardActivity extends AppCompatActivity implements SettingsFrag
         Intent intent = new Intent(this, LoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
+    }
+
+    @Override
+    public void onUserUpdateListener(User updatedUser) {
+        mAuthdUser = updatedUser;
+        mSharedPrefs.setAuthenticatedUserInfo(mAuthdUser);
     }
 
 

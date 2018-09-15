@@ -20,8 +20,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import hr.ferit.coolschool.R;
@@ -37,11 +39,15 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static hr.ferit.coolschool.utils.Constants.COOKIE_KEY;
+import static hr.ferit.coolschool.utils.Constants.EMAIL_REGEX;
+import static hr.ferit.coolschool.utils.Constants.NAME_REGEX;
+import static hr.ferit.coolschool.utils.Constants.USERNAME_REGEX;
 import static hr.ferit.coolschool.utils.Constants.USER_KEY;
 
 public class SettingsFragment extends Fragment implements View.OnClickListener {
 
     private OnLogoutListener mLogoutListener;
+    private OnUserUpdateListener mOnUserUpdateListener;
     private User mAuthUser;
     private List<UserSchool> mUserSchools;
     private List<School> mSchools = new ArrayList<>();
@@ -220,27 +226,187 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
                 checkDataForSchoolAdd();
                 break;
             case R.id.setfr_btn_cancel:
-                setTextValues();
-                btnEdit.setVisibility(View.VISIBLE);
-                btnSave.setVisibility(View.GONE);
-                btnCancel.setVisibility(View.GONE);
-                btnAddSchool.setVisibility(View.GONE);
-                btnLogout.setVisibility(View.VISIBLE);
-                setEtEnabled(false, etName, etSurname, etEmail, etUsername, etPassword);
-                tilNewPassword.setVisibility(View.GONE);
-                tilPassword.setVisibility(View.GONE);
-                tilSchool.setVisibility(View.GONE);
-                spSubjects.setVisibility(View.GONE);
-                tilClass.setVisibility(View.GONE);
-                mUserSchools.clear();
-                mUserSchools.addAll(mAuthUser.getUserSchools());
-                mSchoolsAdapter.setmShowDeleteBtn(false);
+                resetLayoutValues();
                 break;
             case R.id.setfr_btn_save:
-
+                updateUser(getUserFromFields());
                 break;
         }
     }
+
+    private void resetLayoutValues() {
+        setTextValues();
+        btnEdit.setVisibility(View.VISIBLE);
+        btnSave.setVisibility(View.GONE);
+        btnCancel.setVisibility(View.GONE);
+        btnAddSchool.setVisibility(View.GONE);
+        btnLogout.setVisibility(View.VISIBLE);
+        setEtEnabled(false, etName, etSurname, etEmail, etUsername, etPassword);
+        tilNewPassword.setVisibility(View.GONE);
+        tilPassword.setVisibility(View.GONE);
+        tilSchool.setVisibility(View.GONE);
+        spSubjects.setVisibility(View.GONE);
+        tilClass.setVisibility(View.GONE);
+        mUserSchools.clear();
+        mUserSchools.addAll(mAuthUser.getUserSchools());
+        mSchoolsAdapter.setmShowDeleteBtn(false);
+    }
+
+    private void updateUser(User userFromFields) {
+        if (userFromFields != null) {
+            String oldPassword = etPassword.getText().toString();
+            String newPass = etNewPass.getText().toString();
+            if (!newPass.trim().isEmpty()) {
+                if (checkIfPasswordUpdate(oldPassword, newPass)) {
+                    updateUserCall(userFromFields, false);
+                    updatePassword(oldPassword, newPass);
+                }
+            } else {
+                updateUserCall(userFromFields, true);
+            }
+        }
+
+    }
+
+    private void updateUserCall(User userFromFields, boolean resetLayout) {
+        Call<User> call = RetrofitImpl.getUserService().updateUser(
+                mCookie, mAuthUser.getUserId(), userFromFields);
+
+        call.enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                if (response.isSuccessful()) {
+                    String password = mAuthUser.getPassword();
+                    mAuthUser = response.body();
+                    mAuthUser.setPassword(password);
+
+                    mSchoolsAdapter.notifyDataSetChanged();
+                    if (resetLayout) {
+                        resetLayoutValues();
+                        mOnUserUpdateListener.onUserUpdateListener(mAuthUser);
+                    }
+                    //TODO - call on update listener
+                } else {
+                    Log.e("ERROR", response.toString());
+                    // TODO - add toast od something (or not because there will always be a response)
+                }
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                Log.e("ERROR", t.toString());
+            }
+        });
+    }
+
+    private void updatePassword(String password, String newPass) {
+        Call<Boolean> call = RetrofitImpl.getUserService().updateUserPassword(
+                mCookie, mAuthUser.getUserId(), password, newPass);
+
+        call.enqueue(new Callback<Boolean>() {
+            @Override
+            public void onResponse(Call<Boolean> call, Response<Boolean> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(getActivity(), "Profil je uspješno ažuriran", Toast.LENGTH_SHORT).show();
+                    if (response.body()) {
+                        mAuthUser.setPassword(newPass);
+                        mSchoolsAdapter.notifyDataSetChanged();
+                        resetLayoutValues();
+                        mOnUserUpdateListener.onUserUpdateListener(mAuthUser);
+                    }
+                } else {
+                    Log.e("ERROR", response.toString());
+                    // TODO - add toast od something (or not because there will always be a response)
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Boolean> call, Throwable t) {
+                Log.e("ERROR", t.toString());
+            }
+        });
+    }
+
+    private boolean checkIfPasswordUpdate(String oldPassword, String newPass) {
+        boolean passValid = true;
+        if (!oldPassword.equals(mAuthUser.getPassword())) {
+            passValid = false;
+            tilPassword.setError("Unesite staru lozinku");
+        } else if (newPass.length() < 5) {
+            passValid = false;
+            tilNewPassword.setError("Unesite 5 ili više znakova");
+        }
+        return passValid;
+    }
+
+
+    private User getUserFromFields() {
+        String firstName = etName.getText().toString();
+        String lastName = etSurname.getText().toString();
+        String username = etUsername.getText().toString();
+        String password = etPassword.getText().toString();
+        String email = etEmail.getText().toString();
+        if (checkData(firstName, lastName, username, password, email)) {
+            if (mUserSchools.size() > 0) {
+                User user = new User(username, mAuthUser.getPassword(), email, firstName, lastName,
+                        mAuthUser.getRole());
+                user.setUserSchools(new HashSet<>(mUserSchools));
+                return user;
+            } else {
+                Toast.makeText(getActivity(), "Dodajte barem jednu školu", Toast.LENGTH_SHORT).show();
+            }
+        }
+        return null;
+    }
+
+    boolean isValid = true;
+
+    private boolean checkData(String firstName, String lastName, String username, String password, String email) {
+        refreshTilErrors();
+        isValid = true;
+        checkStringAndDisplayError(firstName, tilName, NAME_REGEX,
+                "vaše ime", "Može sadržavati samo slova");
+
+        checkStringAndDisplayError(lastName, tilSurname, NAME_REGEX,
+                "vaše prezime", "Može sadržavati samo slova");
+
+        checkStringAndDisplayError(username, tilUsername,
+                USERNAME_REGEX, "korisničko ime",
+                "Neispravan format");
+
+        checkStringAndDisplayError(email, tilEmail, EMAIL_REGEX,
+                "vašu e-mail adresu", "Neispravan format");
+
+        return isValid;
+    }
+
+    private void checkStringAndDisplayError(String stringToCheck, TextInputLayout til, String regex,
+                                            String nullMsg, String regexMsg) {
+        if (stringToCheck == null) {
+            isValid = false;
+            til.setError(String.format("Unesite %s", nullMsg));
+        } else {
+            if (stringToCheck.trim().isEmpty()) {
+                isValid = false;
+                til.setError(String.format("Unesite %s", nullMsg));
+            } else if (!stringToCheck.matches(regex)) {
+                isValid = false;
+                til.setError(regexMsg);
+            }
+        }
+    }
+
+    private void refreshTilErrors() {
+        tilNewPassword.setErrorEnabled(false);
+        tilPassword.setErrorEnabled(false);
+        tilClass.setErrorEnabled(false);
+        tilEmail.setErrorEnabled(false);
+        tilName.setErrorEnabled(false);
+        tilSurname.setErrorEnabled(false);
+        tilPassword.setErrorEnabled(false);
+        tilUsername.setErrorEnabled(false);
+    }
+
 
     private void setUpEditUI() {
         btnEdit.setVisibility(View.GONE);
@@ -302,6 +468,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
                     mUserSchools.add(userSchool);
                     mSchoolsAdapter.notifyDataSetChanged();
                     actvSchools.setText("");
+                    etClass.setText("");
                 } else {
                     tilSchool.setError("Škola je već dodana");
                 }
@@ -314,5 +481,9 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
 
     public interface OnLogoutListener {
         void onLogoutListener();
+    }
+
+    public interface OnUserUpdateListener {
+        void onUserUpdateListener(User updatedUser);
     }
 }

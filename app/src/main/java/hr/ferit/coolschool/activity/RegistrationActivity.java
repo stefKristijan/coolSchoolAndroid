@@ -37,7 +37,10 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static hr.ferit.coolschool.utils.Constants.EMAIL_REGEX;
+import static hr.ferit.coolschool.utils.Constants.NAME_REGEX;
 import static hr.ferit.coolschool.utils.Constants.REGISTRATION_ACTY_BOOL_EXTRA;
+import static hr.ferit.coolschool.utils.Constants.USERNAME_REGEX;
 
 public class RegistrationActivity extends AppCompatActivity {
 
@@ -155,6 +158,7 @@ public class RegistrationActivity extends AppCompatActivity {
                     mUserSchools.add(userSchool);
                     mSchoolsAdapter.notifyDataSetChanged();
                     actvSchools.setText("");
+                    etClass.setText("");
                 } else {
                     tilSchool.setError("Škola je već dodana");
                 }
@@ -173,7 +177,7 @@ public class RegistrationActivity extends AppCompatActivity {
                 @Override
                 public void onResponse(Call<User> call, Response<User> response) {
                     if (response.isSuccessful()) {
-                        Toast.makeText(getApplicationContext(), "Uspješna registracija", Toast.LENGTH_SHORT);
+                        Toast.makeText(getApplicationContext(), "Uspješna registracija", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                         startActivity(intent);
                     } else {
@@ -215,18 +219,18 @@ public class RegistrationActivity extends AppCompatActivity {
     private boolean checkData(String firstName, String lastName, String username, String password, String email) {
         refreshTilErrors();
         isValid = true;
-        checkStringAndDisplayError(firstName, tilName, "^[a-zA-ZŠšČčĆćŽžĐđ ]+$",
+        checkStringAndDisplayError(firstName, tilName, NAME_REGEX,
                 "vaše ime", "Može sadržavati samo slova");
 
-        checkStringAndDisplayError(lastName, tilSurname, "^[a-zA-ZŠšČčĆćŽžĐđ ]+$",
+        checkStringAndDisplayError(lastName, tilSurname, NAME_REGEX,
                 "vaše prezime", "Može sadržavati samo slova");
 
         checkStringAndDisplayError(username, tilUsername,
-                "^[A-Za-z0-9]+(?:[_-][A-Za-z0-9]+)*$", "korisničko ime",
+                USERNAME_REGEX, "korisničko ime",
                 "Neispravan format");
 
         checkStringAndDisplayError(email, tilEmail,
-                "^([A-Za-z0-9]+(?:[_-][A-Za-z0-9]+)*)@([A-Za-z0-9]+(?:[_-][A-Za-z0-9]+)*)\\.[a-z]{2,4}$",
+                EMAIL_REGEX,
                 "vašu e-mail adresu", "Neispravan format");
 
         if (password == null) {
