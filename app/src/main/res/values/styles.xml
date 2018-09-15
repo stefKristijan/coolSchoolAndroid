@@ -11,6 +11,17 @@
     <style name="AwesomeSplashTheme" parent="Theme.AppCompat.NoActionBar">
         <item name="android:textColorPrimary">@android:color/white</item>
         <item name="android:textColorHint">@color/white_transparent</item>
+        <item name="colorControlNormal">@color/btn_center_color</item>
+        <item name="colorControlActivated">@color/btn_center_color</item>
+        <item name="colorControlHighlight">@color/btn_center_color</item>
+    </style>
+
+    <style name="TextAppearance.App.TextInputLayout" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="error_appearance" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/red</item>
     </style>
 
     <style name="FullscreenTheme" parent="AppTheme">
@@ -26,4 +37,8 @@
     </style>
 
     <color name="white_transparent">#90FFFFFF</color>
+
+    <style name="AwesomeSplashTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AwesomeSplashTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>

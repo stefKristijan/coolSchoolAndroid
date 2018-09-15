@@ -2,7 +2,6 @@ package hr.ferit.coolschool.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -16,6 +15,8 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.ScrollView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,6 +28,7 @@ import java.util.Objects;
 import hr.ferit.coolschool.R;
 import hr.ferit.coolschool.model.Role;
 import hr.ferit.coolschool.model.School;
+import hr.ferit.coolschool.model.Subject;
 import hr.ferit.coolschool.model.User;
 import hr.ferit.coolschool.model.UserSchool;
 import hr.ferit.coolschool.utils.RetrofitImpl;
@@ -44,11 +46,13 @@ public class RegistrationActivity extends AppCompatActivity {
     private SchoolsAdapter mSchoolsAdapter;
     private LayoutManager mLayoutManager;
 
-    private ConstraintLayout constraintLayout;
+    private ScrollView scrollView;
     private TextView tvHeading;
     private TextInputLayout tilClass, tilUsername, tilName, tilSurname,
-            tilEmail, tilPassword, tilRetypedPass;
-    private TextInputEditText etName, etSurname, etUsername, etPassword, etRetypedPass, etEmail, etClass;
+            tilEmail, tilPassword, tilRetypedPass, tilSchool;
+    private TextInputEditText etName, etSurname, etUsername, etPassword,
+            etRetypedPass, etEmail, etClass;
+    private Spinner spSubjects;
     private Button btnAddSchool, btnRegister;
     private AutoCompleteTextView actvSchools;
     private List<UserSchool> mUserSchools = new ArrayList<>();
@@ -75,6 +79,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
     private void setUpUI() {
         this.actvSchools = findViewById(R.id.reg_actv_schools);
+        this.spSubjects = findViewById(R.id.reg_sp_subjects);
         this.etEmail = findViewById(R.id.reg_et_email);
         this.etName = findViewById(R.id.reg_et_name);
         this.etSurname = findViewById(R.id.reg_et_surname);
@@ -82,33 +87,29 @@ public class RegistrationActivity extends AppCompatActivity {
         this.etPassword = findViewById(R.id.reg_et_password);
         this.etRetypedPass = findViewById(R.id.reg_et_retype_pass);
         this.etClass = findViewById(R.id.reg_et_class_num);
+        this.tilEmail = findViewById(R.id.reg_til_email);
+        this.tilName = findViewById(R.id.reg_til_name);
+        this.tilSurname = findViewById(R.id.reg_til_surname);
+        this.tilUsername = findViewById(R.id.reg_til_username);
+        this.tilPassword = findViewById(R.id.reg_til_password);
+        this.tilRetypedPass = findViewById(R.id.reg_til_retype_pass);
+        this.tilClass = findViewById(R.id.reg_til_class);
+        this.tilSchool = findViewById(R.id.reg_til_school);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(
                 this, android.R.layout.simple_list_item_1, fetchSchoolNamesList()
         );
+        this.spSubjects.setAdapter(new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_dropdown_item, Subject.values()));
+
         this.actvSchools.setAdapter(adapter);
-        this.constraintLayout = findViewById(R.id.register_main_layout);
+        this.scrollView = findViewById(R.id.register_main_layout);
         this.tvHeading = findViewById(R.id.reg_tv_heading);
-        this.tilClass = findViewById(R.id.reg_til_class);
         this.btnAddSchool = findViewById(R.id.reg_btn_add_school);
-        btnAddSchool.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                for (School school : mSchools) {
-                    if (actvSchools.getText().toString().startsWith(school.getName())) {
-                        mUserSchools.add(new UserSchool(null, school,
-                                isStudent ? Integer.valueOf(etClass.getText().toString()) : null));
-                        mSchoolsAdapter.notifyDataSetChanged();
-                    }
-                }
-            }
+        btnAddSchool.setOnClickListener(v -> {
+            checkDataForSchoolAdd();
         });
         this.btnRegister = findViewById(R.id.reg_btn_register);
-        this.btnRegister.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                registerUser(getUserFromFields());
-            }
-        });
+        this.btnRegister.setOnClickListener(v -> registerUser(getUserFromFields()));
 
         rvSchools = findViewById(R.id.reg_school_rv);
         mSchoolsAdapter = new SchoolsAdapter(mUserSchools);
@@ -119,28 +120,74 @@ public class RegistrationActivity extends AppCompatActivity {
         rvSchools.setAdapter(mSchoolsAdapter);
     }
 
-    private void registerUser(User userFromFields) {
-        Log.d("REGISTRATION", userFromFields.toString());
-        Call<User> call = RetrofitImpl.getUserService().registration(userFromFields);
-
-        call.enqueue(new Callback<User>() {
-            @Override
-            public void onResponse(Call<User> call, Response<User> response) {
-                if (response.isSuccessful()) {
-                    Toast.makeText(getApplicationContext(), "Uspješna registracija", Toast.LENGTH_SHORT);
-                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                    startActivity(intent);
+    private void checkDataForSchoolAdd() {
+        tilSchool.setErrorEnabled(false);
+        tilClass.setErrorEnabled(false);
+        Integer classNum = null;
+        if (isStudent) {
+            if (etClass.getText() != null) {
+                if (!etClass.getText().toString().isEmpty() &&
+                        Integer.valueOf(etClass.getText().toString()) <= 8 &&
+                        Integer.valueOf(etClass.getText().toString()) > 0) {
+                    classNum = Integer.valueOf(etClass.getText().toString());
+                    addUserSchoolToList(classNum);
                 } else {
-                    Log.e("ERROR", response.toString());
-                    // TODO - add toast od something (or not because there will always be a response)
+                    tilClass.setError("Unesite razred");
+                }
+            } else {
+                tilClass.setError("Unesite razred");
+            }
+        } else {
+            addUserSchoolToList(null);
+        }
+    }
+
+    private void addUserSchoolToList(Integer classNum) {
+        boolean found = false;
+        for (School school : mSchools) {
+            if (actvSchools.getText().toString()
+                    .equals(String.format("%s - %s",school.getName(), school.getCity()))) {
+                found = true;
+                UserSchool userSchool = new UserSchool(null, school,
+                        isStudent ? classNum : null,
+                        isStudent ? null : (Subject) spSubjects.getSelectedItem());
+                if (!mUserSchools.contains(userSchool)) {
+                    mUserSchools.add(userSchool);
+                    mSchoolsAdapter.notifyDataSetChanged();
+                    actvSchools.setText("");
+                } else {
+                    tilSchool.setError("Škola je već dodana");
                 }
             }
+        }
+        if(!found){
+            tilSchool.setError("Odaberite školu s popisa");
+        }
+    }
 
-            @Override
-            public void onFailure(Call<User> call, Throwable t) {
-                Log.e("ERROR", t.toString());
-            }
-        });
+    private void registerUser(User userFromFields) {
+        if (userFromFields != null) {
+            Call<User> call = RetrofitImpl.getUserService().registration(userFromFields);
+
+            call.enqueue(new Callback<User>() {
+                @Override
+                public void onResponse(Call<User> call, Response<User> response) {
+                    if (response.isSuccessful()) {
+                        Toast.makeText(getApplicationContext(), "Uspješna registracija", Toast.LENGTH_SHORT);
+                        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                        startActivity(intent);
+                    } else {
+                        Log.e("ERROR", response.toString());
+                        // TODO - add toast od something (or not because there will always be a response)
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<User> call, Throwable t) {
+                    Log.e("ERROR", t.toString());
+                }
+            });
+        }
     }
 
     private User getUserFromFields() {
@@ -149,11 +196,82 @@ public class RegistrationActivity extends AppCompatActivity {
         String username = etUsername.getText().toString();
         String password = etPassword.getText().toString();
         String email = etEmail.getText().toString();
-        User user = new User(username, password, email, firstName, lastName,
-                isStudent ? Role.ROLE_STUDENT : Role.ROLE_TEACHER);
-        user.setUserSchools(new HashSet<>(mUserSchools));
+        if (checkData(firstName, lastName, username, password, email)) {
+            if(mUserSchools.size() > 0) {
+                User user = new User(username, password, email, firstName, lastName,
+                        isStudent ? Role.ROLE_STUDENT : Role.ROLE_TEACHER);
+                user.setUserSchools(new HashSet<>(mUserSchools));
 
-        return user;
+                return user;
+            }else{
+                Toast.makeText(getApplicationContext(), "Dodajte barem jednu školu", Toast.LENGTH_SHORT).show();
+            }
+        }
+        return null;
+    }
+
+    boolean isValid = true;
+
+    private boolean checkData(String firstName, String lastName, String username, String password, String email) {
+        refreshTilErrors();
+        isValid = true;
+        checkStringAndDisplayError(firstName, tilName, "^[a-zA-ZŠšČčĆćŽžĐđ ]+$",
+                "vaše ime", "Može sadržavati samo slova");
+
+        checkStringAndDisplayError(lastName, tilSurname, "^[a-zA-ZŠšČčĆćŽžĐđ ]+$",
+                "vaše prezime", "Može sadržavati samo slova");
+
+        checkStringAndDisplayError(username, tilUsername,
+                "^[A-Za-z0-9]+(?:[_-][A-Za-z0-9]+)*$", "korisničko ime",
+                "Neispravan format");
+
+        checkStringAndDisplayError(email, tilEmail,
+                "^([A-Za-z0-9]+(?:[_-][A-Za-z0-9]+)*)@([A-Za-z0-9]+(?:[_-][A-Za-z0-9]+)*)\\.[a-z]{2,4}$",
+                "vašu e-mail adresu", "Neispravan format");
+
+        if (password == null) {
+            isValid = false;
+            tilPassword.setError("Unesite lozinku");
+        } else {
+            if (password.trim().isEmpty()) {
+                isValid = false;
+                tilPassword.setError("Unesite lozinku");
+            } else if (password.length() < 5) {
+                isValid = false;
+                tilPassword.setError("Unesite 5 ili više znakova");
+            } else if (!password.equals(etRetypedPass.getText().toString())) {
+                isValid = false;
+                tilRetypedPass.setError("Lozinke ne odgovaraju");
+            }
+        }
+
+        return isValid;
+    }
+
+    private void checkStringAndDisplayError(String stringToCheck, TextInputLayout til, String regex,
+                                            String nullMsg, String regexMsg) {
+        if (stringToCheck == null) {
+            isValid = false;
+            til.setError(String.format("Unesite %s", nullMsg));
+        } else {
+            if (stringToCheck.trim().isEmpty()) {
+                isValid = false;
+                til.setError(String.format("Unesite %s", nullMsg));
+            } else if (!stringToCheck.matches(regex)) {
+                isValid = false;
+                til.setError(regexMsg);
+            }
+        }
+    }
+
+    private void refreshTilErrors() {
+        tilClass.setErrorEnabled(false);
+        tilEmail.setErrorEnabled(false);
+        tilName.setErrorEnabled(false);
+        tilSurname.setErrorEnabled(false);
+        tilPassword.setErrorEnabled(false);
+        tilRetypedPass.setErrorEnabled(false);
+        tilUsername.setErrorEnabled(false);
     }
 
     private List<String> fetchSchoolNamesList() {
@@ -188,12 +306,13 @@ public class RegistrationActivity extends AppCompatActivity {
     }
 
     private void setStudentRegistrationUI() {
-        constraintLayout.setBackgroundResource(R.mipmap.student);
+        scrollView.setBackgroundResource(R.mipmap.student);
         tvHeading.setText(R.string.tv_student_reg);
+        spSubjects.setVisibility(View.GONE);
     }
 
     private void setTeacherRegistrationUI() {
-        constraintLayout.setBackgroundResource(R.mipmap.teacher);
+        scrollView.setBackgroundResource(R.mipmap.teacher);
         tvHeading.setText(R.string.tv_teacher_reg);
         tilClass.setVisibility(View.GONE);
     }

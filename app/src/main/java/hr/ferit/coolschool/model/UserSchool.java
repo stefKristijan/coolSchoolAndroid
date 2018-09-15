@@ -1,6 +1,7 @@
 package hr.ferit.coolschool.model;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 public class UserSchool implements Serializable {
 
@@ -8,11 +9,13 @@ public class UserSchool implements Serializable {
     private User user;
     private School school;
     private Integer classNum;
+    private Subject subject;
 
-    public UserSchool(User user, School school, Integer classNum) {
+    public UserSchool(User user, School school, Integer classNum, Subject subject) {
         this.user = user;
         this.school = school;
         this.classNum = classNum;
+        this.subject = subject;
     }
 
     public UserSchool() {
@@ -25,7 +28,24 @@ public class UserSchool implements Serializable {
                 ", user=" + user +
                 ", school=" + school +
                 ", classNum=" + classNum +
+                ", subject=" + subject +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserSchool that = (UserSchool) o;
+        return Objects.equals(school, that.school) &&
+                Objects.equals(classNum, that.classNum) &&
+                subject == that.subject;
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(school, classNum, subject);
     }
 
     public Long getUserSchoolId() {
@@ -58,5 +78,13 @@ public class UserSchool implements Serializable {
 
     public void setClassNum(Integer classNum) {
         this.classNum = classNum;
+    }
+
+    public Subject getSubject() {
+        return subject;
+    }
+
+    public void setSubject(Subject subject) {
+        this.subject = subject;
     }
 }

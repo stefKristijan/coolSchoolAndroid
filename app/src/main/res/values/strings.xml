@@ -6,14 +6,27 @@
 
     <string name="title_activity_login">LoginActivity</string>
     <string name="tv_login">Prijava</string>
-    <string name="et_username">Korisničko ime</string>
-    <string name="et_password">Lozinka</string>
-    <string name="btn_login">Prijava</string>
+    <string name="username">Korisničko ime</string>
+    <string name="password">Lozinka</string>
+    <string name="login">Prijava</string>
     <string name="tv_no_account">Nemate račun?</string>
-    <string name="tv_register">Registracija</string>
-    <string name="btn_teacher_register">Učitelj/ica</string>
-    <string name="btn_student_register">Učenik/ca</string>
+    <string name="register">Registracija</string>
+    <string name="teacher_mf">Učitelj/ica</string>
+    <string name="student_mf">Učenik/ca</string>
 
     <string name="tv_student_reg">Registracija učenika/ce</string>
-    <string name="tv_teacher_reg">Registracija učitelja/ce</string>
+    <string name="tv_teacher_reg">Registracija učitelja/ice</string>
+    <string name="name">Ime</string>
+    <string name="surname">Prezime</string>
+    <string name="retype_pass">Ponovi lozinku</string>
+    <string name="email">E-mail</string>
+    <string name="choose_school">Odabir škola</string>
+    <string name="search_school">Pretraži škole</string>
+    <string name="class_num">Razred</string>
+    <string name="title_activity_dashboard">DashboardActivity</string>
+    <string name="tab_text_1">Tab 1</string>
+    <string name="tab_text_2">Tab 2</string>
+    <string name="tab_text_3">Tab 3</string>
+    <string name="action_settings">Settings</string>
+    <string name="section_format">Hello World from section: %1$d</string>
 </resources>

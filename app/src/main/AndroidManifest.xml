@@ -27,11 +27,13 @@
         <activity
             android:name=".activity.LoginActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".activity.MainActivity" />
-        <activity android:name=".activity.RegistrationActivity"
-            android:windowSoftInputMode="adjustPan">
-
-        </activity>
+        <activity
+            android:name=".activity.RegistrationActivity"
+            android:windowSoftInputMode="adjustPan"></activity>
+        <activity
+            android:name=".activity.DashboardActivity"
+            android:label="@string/title_activity_dashboard"
+            android:theme="@style/AwesomeSplashTheme"></activity>
     </application>
 
 </manifest>

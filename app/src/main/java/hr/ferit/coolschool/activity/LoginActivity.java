@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -43,33 +42,19 @@ public class LoginActivity extends AppCompatActivity {
         this.etUsername = findViewById(R.id.login_et_username);
         this.etPassword = findViewById(R.id.login_et_password);
         this.btnLogin = findViewById(R.id.login_btn_login);
-        this.btnLogin.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                String username = etUsername.getText().toString().trim();
-                password = etPassword.getText().toString().trim();
-                if (username.isEmpty() || password.isEmpty()) {
-                    Toast.makeText(getApplicationContext(), EMPTY_FIELDS, Toast.LENGTH_SHORT).show();
-                } else {
-                    login(username, password);
-                }
+        this.btnLogin.setOnClickListener(v -> {
+            String username = etUsername.getText().toString().trim();
+            password = etPassword.getText().toString().trim();
+            if (username.isEmpty() || password.isEmpty()) {
+                Toast.makeText(getApplicationContext(), EMPTY_FIELDS, Toast.LENGTH_SHORT).show();
+            } else {
+                login(username, password);
             }
         });
         this.btnStudentReg = findViewById(R.id.login_btn_student_reg);
-        this.btnStudentReg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startRegistrationActivity(true);
-            }
-        });
+        this.btnStudentReg.setOnClickListener(v -> startRegistrationActivity(true));
         this.btnTeacherReg = findViewById(R.id.login_btn_teacher_reg);
-        this.btnTeacherReg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startRegistrationActivity(false);
-            }
-        });
+        this.btnTeacherReg.setOnClickListener(v -> startRegistrationActivity(false));
     }
 
     private void startRegistrationActivity(boolean isStudent) {
@@ -133,7 +118,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void startMainActivity() {
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, DashboardActivity.class);
         intent.putExtra("user", authenticatedUser);
         intent.putExtra("cookie", cookie);
         startActivity(intent);
