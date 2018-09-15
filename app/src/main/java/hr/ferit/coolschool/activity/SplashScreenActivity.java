@@ -20,7 +20,6 @@ import retrofit2.Response;
 
 import static hr.ferit.coolschool.utils.Constants.COOKIE_KEY;
 import static hr.ferit.coolschool.utils.Constants.DEFAULT_ERROR;
-import static hr.ferit.coolschool.utils.Constants.LOGIN_FAIL;
 import static hr.ferit.coolschool.utils.Constants.USER_KEY;
 
 public class SplashScreenActivity extends AwesomeSplash {
@@ -58,9 +57,7 @@ public class SplashScreenActivity extends AwesomeSplash {
     public void animationsFinished() {
         mSharedPrefs = new SharedPrefsHelper(this);
         if (mSharedPrefs.getAuthenticatedUserInfo() == null) {
-            Intent intent = new Intent(this, LoginActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
+            startLoginActivity();
         }else{
             obtainCookieByLogin(mSharedPrefs.getAuthenticatedUserInfo());
             Intent intent = new Intent(this, DashboardActivity.class);
@@ -69,6 +66,12 @@ public class SplashScreenActivity extends AwesomeSplash {
             intent.putExtra(COOKIE_KEY, mSharedPrefs.getCookie());
             startActivity(intent);
         }
+    }
+
+    private void startLoginActivity() {
+        Intent intent = new Intent(this, LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 
     private void obtainCookieByLogin(User authenticatedUserInfo) {
@@ -83,7 +86,7 @@ public class SplashScreenActivity extends AwesomeSplash {
                     mSharedPrefs.setCookie(cookie);
                 } else if (response.code() == 401) {
                     Log.e("LOGIN ERROR", "Unauthorized");
-                    Toast.makeText(getApplicationContext(), LOGIN_FAIL, Toast.LENGTH_SHORT).show();
+                    startLoginActivity();
                 }
             }
 
