@@ -47,7 +47,7 @@ import static hr.ferit.coolschool.utils.Constants.USER_KEY;
 public class SettingsFragment extends Fragment implements View.OnClickListener {
 
     private OnLogoutListener mLogoutListener;
-    private OnUserUpdateListener mOnUserUpdateListener;
+    private OnUserUpdateListener mUserUpdateListener;
     private User mAuthUser;
     private List<UserSchool> mUserSchools;
     private List<School> mSchools = new ArrayList<>();
@@ -205,12 +205,16 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         if (context instanceof OnLogoutListener) {
             mLogoutListener = (OnLogoutListener) context;
         }
+        if(context instanceof OnUserUpdateListener) {
+            mUserUpdateListener = (OnUserUpdateListener) context;
+        }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
         mLogoutListener = null;
+        mUserUpdateListener = null;
     }
 
     @Override
@@ -283,7 +287,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
                     mSchoolsAdapter.notifyDataSetChanged();
                     if (resetLayout) {
                         resetLayoutValues();
-                        mOnUserUpdateListener.onUserUpdateListener(mAuthUser);
+                        mUserUpdateListener.onUserUpdateListener(mAuthUser);
                     }
                     //TODO - call on update listener
                 } else {
@@ -312,7 +316,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
                         mAuthUser.setPassword(newPass);
                         mSchoolsAdapter.notifyDataSetChanged();
                         resetLayoutValues();
-                        mOnUserUpdateListener.onUserUpdateListener(mAuthUser);
+                        mUserUpdateListener.onUserUpdateListener(mAuthUser);
                     }
                 } else {
                     Log.e("ERROR", response.toString());

@@ -13,6 +13,7 @@
         android:layout_height="wrap_content"
         android:background="@color/transparent">
 
+
         <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"
             xmlns:tools="http://schemas.android.com/tools"
@@ -67,6 +68,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/setfr_cl"
+            android:id="@+id/setfr_cl2"
             android:orientation="horizontal">
 
             <Button
@@ -312,6 +314,28 @@
                 app:layout_constraintTop_toBottomOf="@+id/setfr_til_school" />
 
         </android.support.constraint.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/setfr_tv_copyright"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/copyright"
+            android:layout_below="@id/setfr_cl2"
+            android:layout_marginTop="8dp"
+            android:textAlignment="center"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="190dp" />
+        <TextView
+            android:id="@+id/setfr_tv_icons"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/icons_download"
+            android:layout_below="@id/setfr_tv_copyright"
+            android:layout_marginTop="8dp"
+            android:textAlignment="center"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="190dp" />
+
 
     </RelativeLayout>
 </ScrollView>

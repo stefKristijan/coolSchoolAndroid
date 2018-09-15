@@ -37,4 +37,6 @@
     <string name="save">Spremi</string>
     <string name="new_password">Nova lozinka</string>
     <string name="cancel">Odustani</string>
+    <string name="icons_download">Ikone preuzete sa: http://icons8.com</string>
+    <string name="copyright">Copyright Kristijan Štefančić</string>
 </resources>
