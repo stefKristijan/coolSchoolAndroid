@@ -223,6 +223,7 @@
                 android:id="@+id/setfr_til_password"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 app:layout_constraintEnd_toStartOf="@+id/setfr_til_password_new"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
@@ -240,11 +241,10 @@
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/setfr_til_class"
                 android:layout_width="0dp"
-                android:layout_height="70dp"
-                android:layout_marginBottom="0dp"
-                android:visibility="gone"
+                android:layout_height="wrap_content"
                 app:layout_constraintBottom_toBottomOf="@+id/setfr_til_school"
                 app:layout_constraintEnd_toStartOf="@+id/setfr_btn_add_school"
+                android:visibility="gone"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/setfr_sp_subjects"
                 app:layout_constraintTop_toTopOf="@+id/setfr_til_school">

@@ -115,6 +115,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         etPassword = layout.findViewById(R.id.setfr_et_password);
         etNewPass = layout.findViewById(R.id.setfr_et_password_new);
         etClass = layout.findViewById(R.id.setfr_et_class);
+        actvSchools = layout.findViewById(R.id.setfr_actv_school);
         setTextValues();
 
         //TextInputLayouts
@@ -127,7 +128,6 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         tilClass = layout.findViewById(R.id.setfr_til_class);
         tilSchool = layout.findViewById(R.id.setfr_til_school);
 
-        actvSchools = layout.findViewById(R.id.setfr_actv_school);
         spSubjects = layout.findViewById(R.id.setfr_sp_subjects);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(
                 getActivity(), android.R.layout.simple_list_item_1, fetchSchoolNamesList()
@@ -155,7 +155,10 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         etName.setText(mAuthUser.getFirstName());
         etSurname.setText(mAuthUser.getLastName());
         etUsername.setText(mAuthUser.getUsername());
-        etPassword.setText(mAuthUser.getPassword());
+        etPassword.setText("");
+        etNewPass.setText("");
+        etClass.setText("");
+        actvSchools.setText("");
     }
 
     private List<String> fetchSchoolNamesList() {
@@ -225,12 +228,16 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
                 btnLogout.setVisibility(View.VISIBLE);
                 setEtEnabled(false, etName, etSurname, etEmail, etUsername, etPassword);
                 tilNewPassword.setVisibility(View.GONE);
+                tilPassword.setVisibility(View.GONE);
                 tilSchool.setVisibility(View.GONE);
                 spSubjects.setVisibility(View.GONE);
                 tilClass.setVisibility(View.GONE);
                 mUserSchools.clear();
                 mUserSchools.addAll(mAuthUser.getUserSchools());
                 mSchoolsAdapter.setmShowDeleteBtn(false);
+                break;
+            case R.id.setfr_btn_save:
+
                 break;
         }
     }
@@ -250,6 +257,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         setEtEnabled(true, etName, etSurname, etEmail, etUsername, etPassword);
         mSchoolsAdapter.setmShowDeleteBtn(true);
         tilNewPassword.setVisibility(View.VISIBLE);
+        tilPassword.setVisibility(View.VISIBLE);
         tilSchool.setVisibility(View.VISIBLE);
     }
 
