@@ -32,4 +32,9 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="logout">Odjava</string>
+    <string name="edit">Uredi</string>
+    <string name="save">Spremi</string>
+    <string name="new_password">Nova lozinka</string>
+    <string name="cancel">Odustani</string>
 </resources>

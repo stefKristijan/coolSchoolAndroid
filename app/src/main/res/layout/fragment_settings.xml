@@ -1,19 +1,317 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/setfr_root_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".activity.fragment.SettingsFragment">
+    android:layout_height="match_parent">
 
-
-    <Button
-        android:id="@+id/setfr_btn_logout"
-        android:layout_width="wrap_content"
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginTop="8dp"
-        android:text="Logout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-</android.support.constraint.ConstraintLayout>
+        android:background="@color/transparent">
+
+        <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/setfr_cl"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:background="@mipmap/wallpaper"
+            tools:context=".activity.fragment.SettingsFragment">
+
+            <TextView
+                android:id="@+id/setfr_tv_user"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:singleLine="true"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.503"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/circleImageView" />
+
+            <com.github.abdularis.civ.CircleImageView
+                android:id="@+id/circleImageView"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:src="@mipmap/boy"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/setfr_tv_username"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/setfr_tv_user" />
+
+        </android.support.constraint.ConstraintLayout>
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/setfr_cl"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/setfr_btn_logout"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:background="@color/red"
+                android:drawableStart="@drawable/ic_logout"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:text="@string/logout"
+                app:layout_constraintEnd_toStartOf="@+id/setfr_btn_edit"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/setfr_btn_edit"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:background="@color/colorAccent"
+                android:drawableStart="@drawable/ic_edit_profile"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:text="@string/edit"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/setfr_btn_logout"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/setfr_btn_save"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:background="@color/colorPrimary"
+                android:drawableStart="@drawable/ic_save"
+                android:paddingLeft="20dp"
+                android:visibility="gone"
+                android:paddingRight="20dp"
+                android:text="@string/save"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/setfr_btn_cancel"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/setfr_btn_logout"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/setfr_btn_cancel"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:background="@color/white_transparent"
+                android:text="@string/cancel"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/setfr_btn_save"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/setfr_til_surname"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="@+id/setfr_til_name"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/setfr_til_name"
+                app:layout_constraintTop_toTopOf="@+id/setfr_til_name">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/setfr_et_surname"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:enabled="false"
+                    android:hint="@string/surname"
+                    android:inputType="text" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/setfr_til_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="42dp"
+                app:layout_constraintEnd_toStartOf="@+id/setfr_til_surname"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/setfr_et_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:enabled="false"
+                    android:hint="@string/name"
+                    android:inputType="text" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/setfr_til_email"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/setfr_til_name">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/setfr_et_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:enabled="false"
+                    android:hint="@string/email"
+                    android:inputType="textEmailAddress" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/setfr_til_username"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/setfr_til_email">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/setfr_et_username"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:enabled="false"
+                    android:hint="@string/username"
+                    android:inputType="text" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/setfr_til_password_new"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/setfr_til_password"
+                app:layout_constraintTop_toTopOf="@+id/setfr_til_password">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/setfr_et_password_new"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/new_password"
+                    android:inputType="textPassword" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/setfr_til_password"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toStartOf="@+id/setfr_til_password_new"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/setfr_til_username">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/setfr_et_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:enabled="false"
+                    android:hint="@string/password"
+                    android:inputType="textPassword" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/setfr_til_class"
+                android:layout_width="0dp"
+                android:layout_height="70dp"
+                android:layout_marginBottom="0dp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@+id/setfr_til_school"
+                app:layout_constraintEnd_toStartOf="@+id/setfr_btn_add_school"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/setfr_sp_subjects"
+                app:layout_constraintTop_toTopOf="@+id/setfr_til_school">
+
+                <android.support.design.widget.TextInputEditText
+
+                    android:id="@+id/setfr_et_class"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/class_num"
+                    android:inputType="numberSigned" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/setfr_til_school"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:layout_constraintEnd_toStartOf="@+id/setfr_sp_subjects"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/setfr_til_password">
+
+                <AutoCompleteTextView
+                    android:id="@+id/setfr_actv_school"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/search_school"
+                    android:inputType="text" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <Spinner
+                android:id="@+id/setfr_sp_subjects"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@+id/setfr_til_school"
+                app:layout_constraintEnd_toStartOf="@+id/setfr_til_class"
+                app:layout_constraintStart_toEndOf="@+id/setfr_til_school"
+                app:layout_constraintTop_toTopOf="@+id/setfr_til_school" />
+
+            <Button
+                android:id="@+id/setfr_btn_add_school"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/button_add"
+                android:drawableStart="@drawable/ic_add_white"
+                android:paddingStart="8dp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@+id/setfr_til_school"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/setfr_til_class"
+                app:layout_constraintTop_toTopOf="@+id/setfr_til_school" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/setfr_rv_schools"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/setfr_sp_subjects"
+                app:layout_constraintTop_toBottomOf="@+id/setfr_til_school" />
+
+        </android.support.constraint.ConstraintLayout>
+
+    </RelativeLayout>
+</ScrollView>

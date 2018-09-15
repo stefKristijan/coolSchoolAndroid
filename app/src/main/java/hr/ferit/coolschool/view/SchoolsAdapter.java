@@ -16,9 +16,16 @@ import hr.ferit.coolschool.model.UserSchool;
 public class SchoolsAdapter extends RecyclerView.Adapter<SchoolsAdapter.SchoolViewHolder> {
 
     private List<UserSchool> mSchools;
+    private boolean mShowDeleteBtn;
 
-    public SchoolsAdapter(List<UserSchool> mSchools) {
+    public SchoolsAdapter(List<UserSchool> mSchools, boolean showDeleteBtn) {
         this.mSchools = mSchools;
+        this.mShowDeleteBtn = showDeleteBtn;
+    }
+
+    public void setmShowDeleteBtn(boolean mShowDeleteBtn){
+        this.mShowDeleteBtn = mShowDeleteBtn;
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -41,10 +48,22 @@ public class SchoolsAdapter extends RecyclerView.Adapter<SchoolsAdapter.SchoolVi
                         userSchool.getSchool().getCity()
                 )
         );
+        String classSubText =
+                userSchool.getClassNum() == null ?
+                        "Učitelj/ica predmeta: %s" :
+                        "Učenik/ca %s. razreda";
+        schoolViewHolder.tvClassSubject.setText(
+                String.format(
+                        classSubText, userSchool.getClassNum() == null ?
+                                userSchool.getSubject() : userSchool.getClassNum()
+                )
+        );
+        schoolViewHolder.btnDelete.setVisibility(mShowDeleteBtn ? View.VISIBLE : View.GONE);
         schoolViewHolder.btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mSchools.remove(schoolViewHolder.getAdapterPosition());
+                notifyDataSetChanged();
             }
         });
     }
@@ -55,7 +74,7 @@ public class SchoolsAdapter extends RecyclerView.Adapter<SchoolsAdapter.SchoolVi
     }
 
     public static class SchoolViewHolder extends RecyclerView.ViewHolder {
-        TextView tvName, tvAddress;
+        TextView tvName, tvAddress, tvClassSubject;
         Button btnDelete;
 
         SchoolViewHolder(View view) {
@@ -63,6 +82,7 @@ public class SchoolsAdapter extends RecyclerView.Adapter<SchoolsAdapter.SchoolVi
             this.tvAddress = view.findViewById(R.id.rv_si_tv_address);
             this.tvName = view.findViewById(R.id.rv_si_tv_name);
             this.btnDelete = view.findViewById(R.id.rv_si_btn_delete);
+            this.tvClassSubject = view.findViewById(R.id.rv_si_class_sub);
         }
     }
 

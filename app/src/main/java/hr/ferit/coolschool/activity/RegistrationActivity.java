@@ -112,7 +112,7 @@ public class RegistrationActivity extends AppCompatActivity {
         this.btnRegister.setOnClickListener(v -> registerUser(getUserFromFields()));
 
         rvSchools = findViewById(R.id.reg_school_rv);
-        mSchoolsAdapter = new SchoolsAdapter(mUserSchools);
+        mSchoolsAdapter = new SchoolsAdapter(mUserSchools, true);
         mLayoutManager = new LinearLayoutManager(getApplicationContext());
         rvSchools.setLayoutManager(mLayoutManager);
         rvSchools.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));

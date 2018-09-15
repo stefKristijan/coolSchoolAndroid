@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/relativeLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -24,11 +25,12 @@
         android:id="@+id/rv_si_btn_delete"
         android:layout_width="30dp"
         android:layout_height="30dp"
+        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
+        android:background="@color/red"
+        android:drawableStart="@drawable/ic_delete"
         android:paddingStart="3dp"
-        android:drawableStart="@drawable/ic_check"
-        android:background="@drawable/button_shape"
-        app:layout_constraintBottom_toBottomOf="@+id/rv_si_tv_address"
+        app:layout_constraintBottom_toBottomOf="@+id/rv_si_class_sub"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/rv_si_tv_name"
@@ -40,9 +42,19 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         app:layout_constraintEnd_toStartOf="@+id/rv_si_btn_delete"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/rv_si_tv_name" />
+
+    <TextView
+        android:id="@+id/rv_si_class_sub"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        app:layout_constraintEnd_toStartOf="@+id/rv_si_btn_delete"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rv_si_tv_address" />
 
 </android.support.constraint.ConstraintLayout>
