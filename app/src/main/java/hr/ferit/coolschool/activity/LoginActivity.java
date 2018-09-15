@@ -17,13 +17,15 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static hr.ferit.coolschool.utils.Constants.COOKIE_KEY;
 import static hr.ferit.coolschool.utils.Constants.DEFAULT_ERROR;
+import static hr.ferit.coolschool.utils.Constants.LOGIN_FAIL;
+import static hr.ferit.coolschool.utils.Constants.USER_KEY;
 
 public class LoginActivity extends AppCompatActivity {
     //TODO - put link in About or somewhere
 
     private static final String EMPTY_FIELDS = "Unesite podatke za prijavu";
-    private static final String LOGIN_FAIL = "Pogrešno korisničko ime i/ili lozinka";
     private Button btnLogin, btnStudentReg, btnTeacherReg;
     private EditText etUsername, etPassword;
     private User authenticatedUser;
@@ -115,12 +117,13 @@ public class LoginActivity extends AppCompatActivity {
     private void saveAuthenticatedUserToSharedPrefs() {
         authenticatedUser.setPassword(password);
         sharedPrefsHelper.setAuthenticatedUserInfo(authenticatedUser);
+        sharedPrefsHelper.setCookie(cookie);
     }
 
     private void startMainActivity() {
         Intent intent = new Intent(this, DashboardActivity.class);
-        intent.putExtra("user", authenticatedUser);
-        intent.putExtra("cookie", cookie);
+        intent.putExtra(USER_KEY, authenticatedUser);
+        intent.putExtra(COOKIE_KEY, cookie);
         startActivity(intent);
     }
 

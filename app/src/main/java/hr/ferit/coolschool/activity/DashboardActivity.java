@@ -1,142 +1,119 @@
 package hr.ferit.coolschool.activity;
 
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.design.widget.TabLayout;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
+import android.support.v7.app.AppCompatActivity;
 
-import android.widget.TextView;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 import hr.ferit.coolschool.R;
+import hr.ferit.coolschool.activity.fragment.QuizFragment;
+import hr.ferit.coolschool.activity.fragment.RankingFragment;
+import hr.ferit.coolschool.activity.fragment.SettingsFragment;
+import hr.ferit.coolschool.model.User;
+import hr.ferit.coolschool.utils.SharedPrefsHelper;
 
-public class DashboardActivity extends AppCompatActivity {
+import static hr.ferit.coolschool.utils.Constants.COOKIE_KEY;
+import static hr.ferit.coolschool.utils.Constants.USER_KEY;
+
+public class DashboardActivity extends AppCompatActivity implements SettingsFragment.OnLogoutListener{
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
-
     private ViewPager mViewPager;
+    private TabLayout tabs;
+    private int[] tabIcons = {
+            R.drawable.ic_rank,
+            R.drawable.ic_quiz,
+            R.drawable.ic_settings,
+    };
+    private User mAuthdUser;
+    private String mCookie;
+    private SharedPrefsHelper mSharedPrefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        // Create the adapter that will return a fragment for each of the three
-        // primary sections of the activity.
+        mAuthdUser = (User) getIntent().getExtras().get(USER_KEY);
+        mCookie = (String) getIntent().getExtras().get(COOKIE_KEY);
+        mSharedPrefs = new SharedPrefsHelper(this);
+        setActivity();
+
+    }
+
+    private void setActivity() {
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
-        // Set up the ViewPager with the sections adapter.
-        mViewPager = (ViewPager) findViewById(R.id.container);
+        mViewPager = findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
+        setUpViewPager();
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabs = findViewById(R.id.tabs);
+        setUpTabIcons();
 
-        mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-        tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
+        mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabs));
+        tabs.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
     }
 
+
+    private void setUpViewPager() {
+        Fragment rankingFragment = RankingFragment.newInstance(mAuthdUser, mCookie);
+        Fragment quizFragment = QuizFragment.newInstance(mAuthdUser, mCookie);
+        Fragment settingsFragment = SettingsFragment.newInstance(mAuthdUser, mCookie);
+        mSectionsPagerAdapter.addFragment(rankingFragment);
+        mSectionsPagerAdapter.addFragment(quizFragment);
+        mSectionsPagerAdapter.addFragment(settingsFragment);
+        mViewPager.setAdapter(mSectionsPagerAdapter);
+    }
+
+    private void setUpTabIcons() {
+        Objects.requireNonNull(tabs.getTabAt(0)).setIcon(tabIcons[0]);
+        Objects.requireNonNull(tabs.getTabAt(1)).setIcon(tabIcons[1]);
+        Objects.requireNonNull(tabs.getTabAt(2)).setIcon(tabIcons[2]);
+    }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_dashboard, menu);
-        return true;
+    public void onLogoutListener() {
+        mSharedPrefs.setCookie(null);
+        mSharedPrefs.setAuthenticatedUserInfo(null);
+        Intent intent = new Intent(this, LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class PlaceholderFragment extends Fragment {
-        /**
-         * The fragment argument representing the section number for this
-         * fragment.
-         */
-        private static final String ARG_SECTION_NUMBER = "section_number";
-
-        public PlaceholderFragment() {
-        }
-
-        /**
-         * Returns a new instance of this fragment for the given section
-         * number.
-         */
-        public static PlaceholderFragment newInstance(int sectionNumber) {
-            PlaceholderFragment fragment = new PlaceholderFragment();
-            Bundle args = new Bundle();
-            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-            fragment.setArguments(args);
-            return fragment;
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_dashboard, container, false);
-            TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-            textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
-            return rootView;
-        }
-    }
-
-    /**
-     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
-     * one of the sections/tabs/pages.
-     */
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
+        private final List<Fragment> fragments = new ArrayList<>();
 
-        public SectionsPagerAdapter(FragmentManager fm) {
+        SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
         }
 
         @Override
         public Fragment getItem(int position) {
-            // getItem is called to instantiate the fragment for the given page.
-            // Return a PlaceholderFragment (defined as a static inner class below).
-            return PlaceholderFragment.newInstance(position + 1);
+            return this.fragments.get(position);
         }
 
         @Override
         public int getCount() {
-            // Show 3 total pages.
-            return 3;
+            return this.fragments.size();
+        }
+
+        void addFragment(Fragment fragment) {
+            this.fragments.add(fragment);
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return null;
         }
     }
 }
