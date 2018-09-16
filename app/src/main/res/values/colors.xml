@@ -15,4 +15,6 @@
     <color name="btn_add_center">#55156E02</color>
     <color name="btn_add_start">#55185202</color>
     <color name="btn_add_end">#55295E07</color>
+
+    <color name="full_transparent">#00000000</color>
 </resources>

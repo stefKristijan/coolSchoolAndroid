@@ -28,6 +28,9 @@ public class Rank {
         this.classNum = classNum;
     }
 
+    public Rank() {
+    }
+
     public String getSchoolName() {
         return schoolName;
     }
