@@ -10,7 +10,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@color/black_overlay"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/qie_btn_delete"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -18,8 +19,9 @@
             android:id="@+id/qie_et_question"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="text"
-            android:hint="@string/question" />
+            android:hint="@string/question"
+            android:inputType="text" />
+
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
@@ -35,8 +37,8 @@
             android:id="@+id/qie_et_answer_1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="text"
-            android:hint="@string/answer_1" />
+            android:hint="@string/answer_1"
+            android:inputType="text" />
     </android.support.design.widget.TextInputLayout>
 
     <RadioGroup
@@ -51,8 +53,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:paddingBottom="15dp"
             android:checked="true"
+            android:paddingBottom="15dp"
             android:paddingTop="15dp" />
 
         <RadioButton
@@ -94,8 +96,8 @@
             android:id="@+id/qie_et_answer_2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="text"
-            android:hint="@string/answer_2" />
+            android:hint="@string/answer_2"
+            android:inputType="text" />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
@@ -129,8 +131,8 @@
             android:id="@+id/qie_et_answer_4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="text"
-            android:hint="@string/answer_4" />
+            android:hint="@string/answer_4"
+            android:inputType="text" />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
@@ -146,7 +148,21 @@
             android:id="@+id/qie_et_points"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="numberDecimal"
-            android:hint="@string/points_for_answer" />
+            android:hint="@string/points_for_answer"
+            android:inputType="numberDecimal" />
     </android.support.design.widget.TextInputLayout>
+
+    <Button
+        android:id="@+id/qie_btn_delete"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="8dp"
+        android:background="@color/red"
+        android:drawableStart="@drawable/ic_delete"
+        android:paddingStart="3dp"
+        app:layout_constraintBottom_toBottomOf="@+id/qie_til_question"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/qie_til_question"
+        app:layout_constraintTop_toTopOf="@+id/qie_til_question" />
 </android.support.constraint.ConstraintLayout>
