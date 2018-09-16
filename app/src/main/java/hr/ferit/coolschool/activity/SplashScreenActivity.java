@@ -58,13 +58,8 @@ public class SplashScreenActivity extends AwesomeSplash {
         mSharedPrefs = new SharedPrefsHelper(this);
         if (mSharedPrefs.getAuthenticatedUserInfo() == null) {
             startLoginActivity();
-        }else{
+        } else {
             obtainCookieByLogin(mSharedPrefs.getAuthenticatedUserInfo());
-            Intent intent = new Intent(this, DashboardActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            intent.putExtra(USER_KEY, mSharedPrefs.getAuthenticatedUserInfo());
-            intent.putExtra(COOKIE_KEY, mSharedPrefs.getCookie());
-            startActivity(intent);
         }
     }
 
@@ -80,10 +75,14 @@ public class SplashScreenActivity extends AwesomeSplash {
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                Log.d("LOGIN RESPONSE", String.valueOf(response.code()));
                 if (response.code() == 200) {
                     String cookie = response.headers().get("Set-Cookie");
                     mSharedPrefs.setCookie(cookie);
+                    Intent intent = new Intent(getApplicationContext(), DashboardActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    intent.putExtra(USER_KEY, mSharedPrefs.getAuthenticatedUserInfo());
+                    intent.putExtra(COOKIE_KEY, mSharedPrefs.getCookie());
+                    startActivity(intent);
                 } else if (response.code() == 401) {
                     Log.e("LOGIN ERROR", "Unauthorized");
                     startLoginActivity();

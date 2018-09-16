@@ -3,5 +3,9 @@ package hr.ferit.coolschool.model;
 public enum Subject {
     Matematika,
     Fizika,
-    Hrvatski
+    Hrvatski,
+    Glazbeni,
+    Kemija,
+    Biologija,
+    Geografija
 }

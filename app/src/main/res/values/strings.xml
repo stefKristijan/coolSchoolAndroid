@@ -39,4 +39,9 @@
     <string name="cancel">Odustani</string>
     <string name="icons_download">Ikone preuzete sa: http://icons8.com</string>
     <string name="copyright">Copyright Kristijan Štefančić</string>
+    <string name="filter">Filter</string>
+    <string name="tv_difficulty">Težina:</string>
+    <string name="tv_subject">Predmet:</string>
+    <string name="tv_class">Razred:</string>
+    <string name="tv_max_points">Broj bodova:</string>
 </resources>

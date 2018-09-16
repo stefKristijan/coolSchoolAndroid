@@ -9,10 +9,23 @@
     <color name="red">#A00</color>
     <color name="black_overlay">#66000000</color>
     <color name="transparent">#33444444</color>
+    <color name="dark_overlay">#33000000</color>
+    <color name="full_transparent">#00000000</color>
     <color name="btn_center_color">#70DB3F1B</color>
     <color name="btn_start_color">#70C9360D</color>
     <color name="btn_end_color">#70C93E0F</color>
-    <color name="btn_add_center">#55156E02</color>
+    <color name="btn_add_center">#55156e02</color>
     <color name="btn_add_start">#55185202</color>
     <color name="btn_add_end">#55295E07</color>
+
+    <color name="difficulty_1">#00FF00</color>
+    <color name="difficulty_2">#3EFF00</color>
+    <color name="difficulty_3">#88FF00</color>
+    <color name="difficulty_4">#CDFF00</color>
+    <color name="difficulty_5">#FFFF00</color>
+    <color name="difficulty_6">#FFC000</color>
+    <color name="difficulty_7">#FF8200</color>
+    <color name="difficulty_8">#FF5600</color>
+    <color name="difficulty_9">#FF2800</color>
+    <color name="difficulty_10">#FF0000</color>
 </resources>

@@ -1,24 +1,45 @@
 package hr.ferit.coolschool.model;
 
-import java.time.LocalDateTime;
+import android.annotation.SuppressLint;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import java.util.Date;
 import java.util.Set;
 
 public class Quiz {
     private Long quizId;
-    private LocalDateTime creationTime;
-    private LocalDateTime startTime;
-    private LocalDateTime endTime;
+    @JsonFormat(pattern = "dd.MM.yyyy.")
+    private Date creationTime;
+    @JsonFormat(pattern = "dd.MM.yyyy.")
+    private Date startTime;
+    @JsonFormat(pattern = "dd.MM.yyyy.")
+    private Date endTime;
+    private String name;
+    private String description;
     private int classNum;
     private SchoolType schoolType;
     private Subject subject;
     private Float maxPoints;
+    /*
+    1 -> Najjednostavnija razina
+    2 -> Vrlo jednostavna _||_
+    3 -> Jednostavna _||_
+    4 -> Umjerena _||_
+    5 -> Srednja _||_
+    6 -> Teška _||_
+    7 -> Vrlo teška _||_
+    8 -> Stručna _||_
+    9 -> Profesionalna _||_
+    10 -> Doktorska _||_
+     */
     private int difficulty;
     private boolean enabled = true;
 
     private Set<Question> questions;
     private Set<QuizParticipant> quizParticipants;
 
-    public Quiz(LocalDateTime creationTime, LocalDateTime startTime, LocalDateTime endTime, Integer classNum, SchoolType schoolType, Subject subject, Float maxPoints, int difficulty, boolean enabled) {
+    public Quiz(Date creationTime, Date startTime, Date endTime, Integer classNum, SchoolType schoolType, Subject subject, Float maxPoints, int difficulty, boolean enabled) {
         this.creationTime = creationTime;
         this.startTime = startTime;
         this.endTime = endTime;
@@ -41,6 +62,8 @@ public class Quiz {
                 ", startTime=" + startTime +
                 ", endTime=" + endTime +
                 ", classNum=" + classNum +
+                ", name=" + name +
+                ", description=" + description +
                 ", schoolType=" + schoolType +
                 ", subject=" + subject +
                 ", maxPoints=" + maxPoints +
@@ -61,12 +84,16 @@ public class Quiz {
         if (difficulty != quiz.difficulty) return false;
         if (enabled != quiz.enabled) return false;
         if (!quizId.equals(quiz.quizId)) return false;
-        if (creationTime != null ? !creationTime.equals(quiz.creationTime) : quiz.creationTime != null) return false;
-        if (startTime != null ? !startTime.equals(quiz.startTime) : quiz.startTime != null) return false;
+        if (creationTime != null ? !creationTime.equals(quiz.creationTime) : quiz.creationTime != null)
+            return false;
+        if (startTime != null ? !startTime.equals(quiz.startTime) : quiz.startTime != null)
+            return false;
         if (endTime != null ? !endTime.equals(quiz.endTime) : quiz.endTime != null) return false;
         if (classNum != quiz.classNum) return false;
         if (schoolType != quiz.schoolType) return false;
         if (subject != quiz.subject) return false;
+        if (name != quiz.name) return false;
+        if (description != quiz.description) return false;
         return maxPoints.equals(quiz.maxPoints);
     }
 
@@ -78,11 +105,33 @@ public class Quiz {
         result = 31 * result + (endTime != null ? endTime.hashCode() : 0);
         result = 31 * result + classNum;
         result = 31 * result + schoolType.hashCode();
+        result = 31 * result + name.hashCode();
+        result = 31 * result + description.hashCode();
         result = 31 * result + subject.hashCode();
         result = 31 * result + maxPoints.hashCode();
         result = 31 * result + difficulty;
         result = 31 * result + (enabled ? 1 : 0);
         return result;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setClassNum(int classNum) {
+        this.classNum = classNum;
     }
 
     public Long getQuizId() {
@@ -93,27 +142,27 @@ public class Quiz {
         this.quizId = quizId;
     }
 
-    public LocalDateTime getCreationTime() {
+    public Date getCreationTime() {
         return creationTime;
     }
 
-    public void setCreationTime(LocalDateTime creationTime) {
+    public void setCreationTime(Date creationTime) {
         this.creationTime = creationTime;
     }
 
-    public LocalDateTime getStartTime() {
+    public Date getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(LocalDateTime startTime) {
+    public void setStartTime(Date startTime) {
         this.startTime = startTime;
     }
 
-    public LocalDateTime getEndTime() {
+    public Date getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(LocalDateTime endTime) {
+    public void setEndTime(Date endTime) {
         this.endTime = endTime;
     }
 
@@ -180,4 +229,33 @@ public class Quiz {
     public void setQuizParticipants(Set<QuizParticipant> quizParticipants) {
         this.quizParticipants = quizParticipants;
     }
+
+    @SuppressLint("DefaultLocale")
+    public String getDifficultyText() {
+        switch (difficulty) {
+            case 1:
+                return String.format("Najjednostavnija (%d)", difficulty);
+            case 2:
+                return String.format("Vrlo jednostavna (%d)", difficulty);
+            case 3:
+                return String.format("Jednostavna (%d)", difficulty);
+            case 4:
+                return String.format("Umjerena (%d)", difficulty);
+            case 5:
+                return String.format("Srednja (%d)", difficulty);
+            case 6:
+                return String.format("Teška (%d)", difficulty);
+            case 7:
+                return String.format("Vrlo teška (%d)", difficulty);
+            case 8:
+                return String.format("Stručna (%d)", difficulty);
+            case 9:
+                return String.format("Profesionalna (%d)", difficulty);
+            case 10:
+                return String.format("Doktorska (%d)", difficulty);
+            default:
+                return String.format("Nepoznata (%d)", difficulty);
+        }
+    }
+
 }

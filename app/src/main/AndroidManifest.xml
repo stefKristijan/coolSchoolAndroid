@@ -29,11 +29,12 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.RegistrationActivity"
-            android:windowSoftInputMode="adjustPan"></activity>
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".activity.DashboardActivity"
             android:label="@string/title_activity_dashboard"
-            android:theme="@style/AwesomeSplashTheme"></activity>
+            android:theme="@style/AwesomeSplashTheme" />
+        <activity android:name=".activity.QuizInsertUpdate"></activity>
     </application>
 
 </manifest>
