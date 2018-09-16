@@ -21,18 +21,6 @@ public class Quiz {
     private SchoolType schoolType;
     private Subject subject;
     private Float maxPoints;
-    /*
-    1 -> Najjednostavnija razina
-    2 -> Vrlo jednostavna _||_
-    3 -> Jednostavna _||_
-    4 -> Umjerena _||_
-    5 -> Srednja _||_
-    6 -> Teška _||_
-    7 -> Vrlo teška _||_
-    8 -> Stručna _||_
-    9 -> Profesionalna _||_
-    10 -> Doktorska _||_
-     */
     private int difficulty;
     private boolean enabled = true;
 
