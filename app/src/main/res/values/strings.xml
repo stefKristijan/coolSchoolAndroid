@@ -44,4 +44,13 @@
     <string name="tv_subject">Predmet:</string>
     <string name="tv_class">Razred:</string>
     <string name="tv_max_points">Broj bodova:</string>
+    <string name="question">Unesite pitanje</string>
+    <string name="answer_1">Unesite prvi odgovor</string>
+    <string name="answer_2">Unesite drugi odgovor</string>
+    <string name="answer_3">Unesite treći odgovor</string>
+    <string name="answer_4">Unesite četvrti odgovor</string>
+    <string name="points_for_answer">Broj bodova za točan odgovor</string>
+    <string name="title_hint">Naslov kviza</string>
+    <string name="description_hint">Opis kviza (tipovi pitanja itd.)</string>
+    <string name="sum_points_hint">Suma bodova</string>
 </resources>

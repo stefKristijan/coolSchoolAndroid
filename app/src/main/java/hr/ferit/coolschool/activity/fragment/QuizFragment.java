@@ -1,6 +1,8 @@
 package hr.ferit.coolschool.activity.fragment;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -23,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import hr.ferit.coolschool.R;
+import hr.ferit.coolschool.activity.QuizInsertUpdateActivity;
 import hr.ferit.coolschool.model.Quiz;
 import hr.ferit.coolschool.model.Role;
 import hr.ferit.coolschool.model.SchoolType;
@@ -45,6 +48,7 @@ public class QuizFragment extends Fragment {
 
     //    private OnFragmentInteractionListener mListener;
     private User mAuthUser;
+    private boolean isStudent;
     private String mCookie;
     private List<Quiz> mQuizzes;
 
@@ -77,6 +81,7 @@ public class QuizFragment extends Fragment {
             mAuthUser = (User) getArguments().getSerializable(USER_KEY);
         }
         mQuizzes = new ArrayList<>();
+        isStudent = mAuthUser.getRole().equals(Role.ROLE_STUDENT);
     }
 
     @Override
@@ -87,8 +92,13 @@ public class QuizFragment extends Fragment {
         return layout;
     }
 
+    @SuppressLint("RestrictedApi")
     private void setUpUI(View layout) {
         rvQuizzes = layout.findViewById(R.id.quizfr_rv);
+        fabNewQuiz = layout.findViewById(R.id.quizfr_fab_add);
+        if(isStudent) {
+            fabNewQuiz.setVisibility(View.GONE);
+        }
         mLayoutManager = new LinearLayoutManager(getActivity());
         rvQuizzes.setLayoutManager(mLayoutManager);
         rvQuizzes.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));
@@ -112,6 +122,9 @@ public class QuizFragment extends Fragment {
                 getActivity(), android.R.layout.simple_spinner_dropdown_item, getSpinnerSubjects());
         spSubject.setAdapter(subjects);
 
+        fabNewQuiz.setOnClickListener(v ->{
+            startInsertAndUpdateActivity();
+        });
         btnSearch.setOnClickListener(v -> {
             Integer difficulty = null, classNum = null;
             Subject subject = null;
@@ -128,6 +141,10 @@ public class QuizFragment extends Fragment {
         });
     }
 
+    private void startInsertAndUpdateActivity() {
+        Intent intent = new Intent(getActivity(), QuizInsertUpdateActivity.class);
+        startActivityForResult(intent, 100);
+    }
 
 
     private void fetchQuizList(Integer difficulty, Integer classNum, Subject subject) {

@@ -5,7 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import hr.ferit.coolschool.R;
 
-public class QuizInsertUpdate extends AppCompatActivity {
+public class QuizInsertUpdateActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

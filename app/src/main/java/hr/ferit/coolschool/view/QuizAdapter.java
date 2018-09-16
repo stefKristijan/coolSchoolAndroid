@@ -121,7 +121,7 @@ public class QuizAdapter extends RecyclerView.Adapter<QuizAdapter.QuizViewHolder
         return mQuizzes.size();
     }
 
-    public static class QuizViewHolder extends RecyclerView.ViewHolder {
+    static class QuizViewHolder extends RecyclerView.ViewHolder {
         private CircleImageView civSubject;
         private TextView tvTitle, tvDescription, tvPoints, tvDifficulty;
 
