@@ -1,6 +1,7 @@
 package hr.ferit.coolschool.utils;
 
 import hr.ferit.coolschool.service.QuizService;
+import hr.ferit.coolschool.service.RankService;
 import hr.ferit.coolschool.service.SchoolService;
 import hr.ferit.coolschool.service.UserService;
 import okhttp3.OkHttpClient;
@@ -14,6 +15,7 @@ public class RetrofitImpl {
     private static UserService userService;
     private static SchoolService schoolService;
     private static QuizService quizService;
+    private static RankService rankService;
 
     public static Retrofit getRetrofitInstance() {
         if (retrofit == null) {
@@ -45,5 +47,12 @@ public class RetrofitImpl {
             schoolService = getRetrofitInstance().create(SchoolService.class);
         }
         return schoolService;
+    }
+
+    public static RankService getRankService() {
+        if (rankService == null) {
+            rankService = getRetrofitInstance().create(RankService.class);
+        }
+        return rankService;
     }
 }

@@ -3,6 +3,8 @@ package hr.ferit.coolschool.utils;
 import java.util.ArrayList;
 import java.util.List;
 
+import hr.ferit.coolschool.model.City;
+import hr.ferit.coolschool.model.State;
 import hr.ferit.coolschool.model.Subject;
 
 import static java.util.Arrays.asList;
@@ -48,12 +50,31 @@ public class Constants {
                 "Doktorska (10)"
         );
     }
-    public static List<String> getSpinnerSubjects(){
+
+    public static List<String> getSpinnerSubjects() {
         List<String> subjects = new ArrayList<>();
         subjects.add(" ");
-        for(Subject subject : Subject.values()){
+        for (Subject subject : Subject.values()) {
             subjects.add(subject.toString());
         }
         return subjects;
+    }
+
+    public static List<String> getSpinnerStates() {
+        List<String> subjects = new ArrayList<>();
+        subjects.add("-");
+        for (State state : State.values()) {
+            subjects.add(state.getValue());
+        }
+        return subjects;
+    }
+
+    public static List<String> getSpinnerCities() {
+        List<String> cities = new ArrayList<>();
+        cities.add("-");
+        for (City city : City.values()) {
+            cities.add(city.toString());
+        }
+        return cities;
     }
 }

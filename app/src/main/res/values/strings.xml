@@ -54,4 +54,8 @@
     <string name="description_hint">Opis kviza (tipovi pitanja itd.)</string>
     <string name="sum_points_hint">Suma bodova</string>
     <string name="add">Dodaj</string>
+    <string name="tv_school">Škola</string>
+    <string name="tv_city">Grad</string>
+    <string name="tv_county">Županija</string>
+    <string name="tv_current_position">Nalazite se na %1$d. poziciji u odnosu na sve igrače</string>
 </resources>
