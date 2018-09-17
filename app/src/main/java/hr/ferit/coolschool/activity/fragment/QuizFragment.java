@@ -113,7 +113,7 @@ public class QuizFragment extends Fragment {
         rvQuizzes.setLayoutManager(mLayoutManager);
         rvQuizzes.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));
         rvQuizzes.setItemAnimator(new DefaultItemAnimator());
-        mQuizAdapter = new QuizAdapter(mQuizzes, getContext());
+        mQuizAdapter = new QuizAdapter(mQuizzes, getActivity());
         rvQuizzes.setAdapter(mQuizAdapter);
         spClass = layout.findViewById(R.id.quizfr_sp_class);
         btnSearch = layout.findViewById(R.id.quizfr_btn_search);

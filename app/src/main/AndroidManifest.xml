@@ -33,11 +33,15 @@
         <activity
             android:name=".activity.DashboardActivity"
             android:label="@string/title_activity_dashboard"
-            android:windowSoftInputMode="adjustPan"
-            android:theme="@style/AwesomeSplashTheme" />
-        <activity android:name=".activity.QuizInsertUpdateActivity"
-            android:windowSoftInputMode="adjustPan"
-            />
+            android:theme="@style/AwesomeSplashTheme"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".activity.QuizInsertUpdateActivity"
+            android:windowSoftInputMode="adjustPan" />
+
+        <activity
+        android:name=".activity.QuizSubmitActivity"
+        android:windowSoftInputMode="adjustPan" />
     </application>
 
 </manifest>

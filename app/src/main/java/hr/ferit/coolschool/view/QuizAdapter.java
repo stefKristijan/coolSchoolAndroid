@@ -1,7 +1,9 @@
 package hr.ferit.coolschool.view;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,8 +15,13 @@ import com.github.abdularis.civ.CircleImageView;
 import java.util.List;
 
 import hr.ferit.coolschool.R;
+import hr.ferit.coolschool.activity.QuizSubmitActivity;
 import hr.ferit.coolschool.model.Quiz;
 import hr.ferit.coolschool.model.Subject;
+import hr.ferit.coolschool.utils.SharedPrefsHelper;
+
+import static hr.ferit.coolschool.utils.Constants.COOKIE_KEY;
+import static hr.ferit.coolschool.utils.Constants.QUIZ_KEY;
 
 public class QuizAdapter extends RecyclerView.Adapter<QuizAdapter.QuizViewHolder> {
 
@@ -43,6 +50,14 @@ public class QuizAdapter extends RecyclerView.Adapter<QuizAdapter.QuizViewHolder
         quizViewHolder.tvDifficulty.setText(quiz.getDifficultyText());
         setSubjectPicture(quiz.getSubject(), quizViewHolder);
         setDifficultyColor(quiz.getDifficulty(), quizViewHolder);
+
+        quizViewHolder.mainLayout.setOnClickListener(v ->{
+            SharedPrefsHelper sp = new SharedPrefsHelper(mContext);
+            Intent intent = new Intent(mContext, QuizSubmitActivity.class);
+            intent.putExtra(QUIZ_KEY, quiz);
+            intent.putExtra(COOKIE_KEY, sp.getCookie());
+            mContext.startActivity(intent);
+        });
     }
 
     private void setSubjectPicture(Subject subject, QuizViewHolder quizViewHolder) {
@@ -124,9 +139,11 @@ public class QuizAdapter extends RecyclerView.Adapter<QuizAdapter.QuizViewHolder
     static class QuizViewHolder extends RecyclerView.ViewHolder {
         private CircleImageView civSubject;
         private TextView tvTitle, tvDescription, tvPoints, tvDifficulty;
+        private ConstraintLayout mainLayout;
 
         QuizViewHolder(View view) {
             super(view);
+            this.mainLayout = view.findViewById(R.id.qi_main);
             this.civSubject = view.findViewById(R.id.qi_image);
             this.tvDescription = view.findViewById(R.id.qi_tv_description);
             this.tvDifficulty = view.findViewById(R.id.qi_tv_difficulty);

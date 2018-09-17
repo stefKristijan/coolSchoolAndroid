@@ -58,4 +58,7 @@
     <string name="tv_city">Grad</string>
     <string name="tv_county">Županija</string>
     <string name="tv_current_position">Nalazite se na %1$d. poziciji u odnosu na sve igrače</string>
+    <string name="won_points">Ostvaren broj bodova:</string>
+
+    <string name="title_activity_quiz_submit">QuizSubmitActivity</string>
 </resources>
