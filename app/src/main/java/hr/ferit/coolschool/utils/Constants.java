@@ -21,7 +21,7 @@ public class Constants {
 
     public static List<String> getClassList() {
         return asList(
-                "-",
+                " ",
                 "1. razred",
                 "2. razred",
                 "3. razred",
@@ -35,7 +35,7 @@ public class Constants {
 
     public static List<String> getDifficulties() {
         return asList(
-                "-",
+                " ",
                 "Najjednostavnija (1)",
                 "Vrlo jednostavna (2)",
                 "Jednostavna (3)",
@@ -50,7 +50,7 @@ public class Constants {
     }
     public static List<String> getSpinnerSubjects(){
         List<String> subjects = new ArrayList<>();
-        subjects.add("-");
+        subjects.add(" ");
         for(Subject subject : Subject.values()){
             subjects.add(subject.toString());
         }

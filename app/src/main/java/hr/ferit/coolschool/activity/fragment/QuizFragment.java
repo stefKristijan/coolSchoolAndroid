@@ -31,6 +31,7 @@ import hr.ferit.coolschool.model.Role;
 import hr.ferit.coolschool.model.SchoolType;
 import hr.ferit.coolschool.model.Subject;
 import hr.ferit.coolschool.model.User;
+import hr.ferit.coolschool.model.UserSchool;
 import hr.ferit.coolschool.utils.RetrofitImpl;
 import hr.ferit.coolschool.view.QuizAdapter;
 import retrofit2.Call;
@@ -96,8 +97,17 @@ public class QuizFragment extends Fragment {
     private void setUpUI(View layout) {
         rvQuizzes = layout.findViewById(R.id.quizfr_rv);
         fabNewQuiz = layout.findViewById(R.id.quizfr_fab_add);
-        if(isStudent) {
+        ArrayAdapter<String> subjects;
+        if (isStudent) {
             fabNewQuiz.setVisibility(View.GONE);
+            subjects = new ArrayAdapter<>(
+                    getActivity(), android.R.layout.simple_spinner_dropdown_item, getSpinnerSubjects());
+        } else {
+            List<String> subjectsStrings = new ArrayList<>();
+            for (UserSchool userSchool : mAuthUser.getUserSchools()) {
+                subjectsStrings.add(userSchool.getSubject().toString());
+            }
+            subjects = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, subjectsStrings);
         }
         mLayoutManager = new LinearLayoutManager(getActivity());
         rvQuizzes.setLayoutManager(mLayoutManager);
@@ -107,7 +117,8 @@ public class QuizFragment extends Fragment {
         rvQuizzes.setAdapter(mQuizAdapter);
         spClass = layout.findViewById(R.id.quizfr_sp_class);
         btnSearch = layout.findViewById(R.id.quizfr_btn_search);
-        fetchQuizList(null, null, null);
+        fetchQuizList(null, null,
+                isStudent ? null : mAuthUser.getUserSchools().iterator().next().getSubject());
         ArrayAdapter<String> classes = new ArrayAdapter<>(
                 getActivity(), android.R.layout.simple_spinner_dropdown_item, getClassList());
         spClass.setAdapter(classes);
@@ -118,24 +129,28 @@ public class QuizFragment extends Fragment {
         spDifficulty.setAdapter(difficulties);
 
         spSubject = layout.findViewById(R.id.quizfr_sp_subject);
-        ArrayAdapter<String> subjects = new ArrayAdapter<>(
-                getActivity(), android.R.layout.simple_spinner_dropdown_item, getSpinnerSubjects());
+
         spSubject.setAdapter(subjects);
 
-        fabNewQuiz.setOnClickListener(v ->{
+        fabNewQuiz.setOnClickListener(v -> {
             startInsertAndUpdateActivity();
         });
         btnSearch.setOnClickListener(v -> {
             Integer difficulty = null, classNum = null;
             Subject subject = null;
-            if(spDifficulty.getSelectedItemPosition() > 0){
+            if (spDifficulty.getSelectedItemPosition() > 0) {
                 difficulty = spDifficulty.getSelectedItemPosition();
             }
-            if(spClass.getSelectedItemPosition() > 0){
+            if (spClass.getSelectedItemPosition() > 0) {
                 classNum = spClass.getSelectedItemPosition();
             }
-            if(spSubject.getSelectedItemPosition() > 0){
-                subject = Subject.values()[spSubject.getSelectedItemPosition()-1];
+            if ((spSubject.getSelectedItemPosition() > 0 && isStudent) || !isStudent) {
+                for (Subject subject1 : Subject.values()) {
+                    if (subject1.equals(Subject.valueOf((String) spSubject.getSelectedItem()))) {
+                        subject = subject1;
+                        break;
+                    }
+                }
             }
             fetchQuizList(difficulty, classNum, subject);
         });
@@ -143,8 +158,11 @@ public class QuizFragment extends Fragment {
 
     private void startInsertAndUpdateActivity() {
         Intent intent = new Intent(getActivity(), QuizInsertUpdateActivity.class);
-        startActivityForResult(intent, 100);
+        intent.putExtra(USER_KEY, mAuthUser);
+        intent.putExtra(COOKIE_KEY, mCookie);
+        getActivity().startActivityForResult(intent, 100);
     }
+
 
 
     private void fetchQuizList(Integer difficulty, Integer classNum, Subject subject) {

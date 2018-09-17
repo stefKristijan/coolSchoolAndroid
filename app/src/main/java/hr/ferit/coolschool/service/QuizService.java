@@ -6,8 +6,10 @@ import hr.ferit.coolschool.model.Quiz;
 import hr.ferit.coolschool.model.SchoolType;
 import hr.ferit.coolschool.model.Subject;
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.POST;
 import retrofit2.http.Query;
 
 public interface QuizService {
@@ -19,4 +21,7 @@ public interface QuizService {
                                  @Query("classNum") Integer classNum,
                                  @Query("schoolType") SchoolType schoolType,
                                  @Query("subject") Subject subject);
+
+    @POST("api/quizzes")
+    Call<Quiz> insertQuiz(@Header("Cookie") String cookie, @Body Quiz quiz);
 }

@@ -1,17 +1,13 @@
 package hr.ferit.coolschool.view;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
-import android.support.design.widget.TextInputEditText;
-import android.support.design.widget.TextInputLayout;
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,9 +16,12 @@ import hr.ferit.coolschool.R;
 import hr.ferit.coolschool.model.Answer;
 import hr.ferit.coolschool.model.Question;
 
+import static hr.ferit.coolschool.R.color.btn_add_center;
+
 public class QuestionAnswerAdapter extends RecyclerView.Adapter<QuestionAnswerAdapter.QuestionAnswerViewHolder> {
 
     private List<Question> mQuestions;
+    private Context mContext;
 
     public QuestionAnswerAdapter(List<Question> questions) {
         this.mQuestions = questions;
@@ -31,6 +30,7 @@ public class QuestionAnswerAdapter extends RecyclerView.Adapter<QuestionAnswerAd
     @NonNull
     @Override
     public QuestionAnswerViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+        mContext = viewGroup.getContext();
         View quizView = LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.question_item, viewGroup, false);
         return new QuestionAnswerViewHolder(quizView);
@@ -41,77 +41,40 @@ public class QuestionAnswerAdapter extends RecyclerView.Adapter<QuestionAnswerAd
         Question question = mQuestions.get(i);
         List<Answer> answers = new ArrayList<>(question.getAnswers());
         float points = 0;
-        for (Answer answer : answers) {
-            if (answer.isCorrect()) {
-                points = answer.getPoints();
+        for (int j = 0; j < answers.size(); j++) {
+            if (answers.get(j).isCorrect()) {
+                points = answers.get(j).getPoints();
+                switch (j) {
+                    case 0:
+                        qavh.tvAnswer1.setTextColor(mContext.getResources().getColor(btn_add_center));
+                        break;
+                    case 1:
+                        qavh.tvAnswer2.setTextColor(mContext.getResources().getColor(btn_add_center));
+                        break;
+                    case 2:
+                        qavh.tvAnswer3.setTextColor(mContext.getResources().getColor(btn_add_center));
+                        break;
+                    case 3:
+                        qavh.tvAnswer4.setTextColor(mContext.getResources().getColor(btn_add_center));
+                        break;
+                }
                 break;
             }
         }
-        qavh.etQuestion.setText(question.getQuestionText());
-        setOnTextChangeListener(qavh.etQuestion, qavh.tilQuestion);
-        qavh.etAnswer1.setText(answers.get(0) != null ? answers.get(0).getAnswer() : "");
-        setOnTextChangeListener(qavh.etAnswer1, qavh.tilAnswer1);
-        qavh.etAnswer2.setText(answers.get(1) != null ? answers.get(1).getAnswer() : "");
-        setOnTextChangeListener(qavh.etAnswer2, qavh.tilAnswer2);
-        qavh.etAnswer3.setText(answers.get(2) != null ? answers.get(2).getAnswer() : "");
-        setOnTextChangeListener(qavh.etAnswer3, qavh.tilAnswer3);
-        qavh.etAnswer4.setText(answers.get(3) != null ? answers.get(3).getAnswer() : "");
-        setOnTextChangeListener(qavh.etAnswer4, qavh.tilAnswer4);
-        qavh.etPoints.setText(String.valueOf(points));
-        qavh.etPoints.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                qavh.tilPoints.setErrorEnabled(false);
-            }
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                try {
-                    float points = Float.parseFloat((String) s);
-                    if(points <= 0){
-                        qavh.tilPoints.setError("Unesite broj veći od 0");
-                    }
-                }catch (Exception e){
-                    qavh.tilPoints.setError("Unesite broj");
-                }
-            }
+        qavh.tvPoints.setText(String.valueOf(points));
+        qavh.tvAnswer1.setText(answers.get(0).getAnswer());
+        qavh.tvAnswer2.setText(answers.get(1).getAnswer());
+        qavh.tvAnswer3.setText(answers.get(2).getAnswer());
+        qavh.tvAnswer4.setText(answers.get(3).getAnswer());
+        qavh.tvQuestion.setText(question.getQuestionText());
 
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
+        qavh.btnDelete.setOnClickListener(v -> {
+            mQuestions.remove(i);
+            notifyDataSetChanged();
         });
-        if (answers.get(0) != null && answers.get(0).isCorrect()) {
-            qavh.rbAnswer1.setChecked(true);
-        } else if (answers.get(1) != null && answers.get(1).isCorrect()) {
-            qavh.rbAnswer2.setChecked(true);
-        } else if (answers.get(2) != null && answers.get(2).isCorrect()) {
-            qavh.rbAnswer3.setChecked(true);
-        } else if (answers.get(3) != null && answers.get(3).isCorrect()) {
-            qavh.rbAnswer4.setChecked(true);
-        } else {
-            qavh.rbAnswer1.setChecked(true);
-        }
-    }
 
-    private void setOnTextChangeListener(TextInputEditText et, TextInputLayout til) {
-        et.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                til.setErrorEnabled(false);
-            }
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.length() == 0) {
-                    til.setError("Unesite pitanje!");
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
     }
 
     @Override
@@ -121,34 +84,18 @@ public class QuestionAnswerAdapter extends RecyclerView.Adapter<QuestionAnswerAd
 
     static class QuestionAnswerViewHolder extends RecyclerView.ViewHolder {
 
-        TextInputLayout tilQuestion, tilAnswer1, tilAnswer2, tilAnswer3, tilAnswer4, tilPoints;
-        TextInputEditText etQuestion, etAnswer1, etAnswer2, etAnswer3, etAnswer4, etPoints;
         Button btnDelete;
-        RadioGroup radioGroup;
-        RadioButton rbAnswer1, rbAnswer2, rbAnswer3, rbAnswer4;
+        TextView tvQuestion, tvAnswer1, tvAnswer2, tvAnswer3, tvAnswer4, tvPoints;
 
         QuestionAnswerViewHolder(View view) {
             super(view);
-            tilPoints = view.findViewById(R.id.qie_til_points);
-            tilQuestion = view.findViewById(R.id.qie_til_question);
-            tilAnswer1 = view.findViewById(R.id.qie_til_answer_1);
-            tilAnswer2 = view.findViewById(R.id.qie_til_answer_2);
-            tilAnswer3 = view.findViewById(R.id.qie_til_answer_3);
-            tilAnswer4 = view.findViewById(R.id.qie_til_answer_4);
-
-            etPoints = view.findViewById(R.id.qie_et_points);
-            etQuestion = view.findViewById(R.id.qie_et_question);
-            etAnswer1 = view.findViewById(R.id.qie_et_answer_1);
-            etAnswer2 = view.findViewById(R.id.qie_et_answer_2);
-            etAnswer3 = view.findViewById(R.id.qie_et_answer_3);
-            etAnswer4 = view.findViewById(R.id.qie_et_answer_4);
-
             btnDelete = view.findViewById(R.id.qie_btn_delete);
-            radioGroup = view.findViewById(R.id.qie_radio_group);
-            rbAnswer1 = view.findViewById(R.id.qie_rb_answer_1);
-            rbAnswer2 = view.findViewById(R.id.qie_rb_answer_2);
-            rbAnswer3 = view.findViewById(R.id.qie_rb_answer_3);
-            rbAnswer4 = view.findViewById(R.id.qie_rb_answer_4);
+            tvQuestion = view.findViewById(R.id.qie_tv_question);
+            tvAnswer1 = view.findViewById(R.id.qie_tv_answer1);
+            tvAnswer2 = view.findViewById(R.id.qie_tv_answer2);
+            tvAnswer3 = view.findViewById(R.id.qie_tv_answer3);
+            tvAnswer4 = view.findViewById(R.id.qie_tv_answer4);
+            tvPoints = view.findViewById(R.id.qie_tv_points);
         }
     }
 }

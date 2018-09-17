@@ -5,152 +5,18 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/qie_til_question"
+    <TextView
+        android:id="@+id/qie_tv_question"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@color/black_overlay"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textColor="@color/white"
+        android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/qie_btn_delete"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <android.support.design.widget.TextInputEditText
-            android:id="@+id/qie_et_question"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/question"
-            android:inputType="text" />
-
-    </android.support.design.widget.TextInputLayout>
-
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/qie_til_answer_1"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/qie_radio_group"
-        app:layout_constraintTop_toBottomOf="@+id/qie_til_question">
-
-        <android.support.design.widget.TextInputEditText
-            android:id="@+id/qie_et_answer_1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/answer_1"
-            android:inputType="text" />
-    </android.support.design.widget.TextInputLayout>
-
-    <RadioGroup
-        android:id="@+id/qie_radio_group"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/qie_til_question">
-
-        <RadioButton
-            android:id="@+id/qie_rb_answer_1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:checked="true"
-            android:paddingBottom="15dp"
-            android:paddingTop="15dp" />
-
-        <RadioButton
-            android:id="@+id/qie_rb_answer_2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:paddingBottom="15dp"
-            android:paddingTop="15dp" />
-
-        <RadioButton
-            android:id="@+id/qie_rb_answer_3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:paddingBottom="15dp"
-            android:paddingTop="15dp" />
-
-        <RadioButton
-            android:id="@+id/qie_rb_answer_4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:paddingBottom="15dp"
-            android:paddingTop="15dp" />
-    </RadioGroup>
-
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/qie_til_answer_2"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="4dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/qie_radio_group"
-        app:layout_constraintTop_toBottomOf="@+id/qie_til_answer_1">
-
-        <android.support.design.widget.TextInputEditText
-            android:id="@+id/qie_et_answer_2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/answer_2"
-            android:inputType="text" />
-    </android.support.design.widget.TextInputLayout>
-
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/qie_til_answer_3"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="4dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/qie_radio_group"
-        app:layout_constraintTop_toBottomOf="@+id/qie_til_answer_2">
-
-        <android.support.design.widget.TextInputEditText
-            android:id="@+id/qie_et_answer_3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/answer_3" />
-    </android.support.design.widget.TextInputLayout>
-
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/qie_til_answer_4"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="4dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/qie_radio_group"
-        app:layout_constraintTop_toBottomOf="@+id/qie_til_answer_3">
-
-        <android.support.design.widget.TextInputEditText
-            android:id="@+id/qie_et_answer_4"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/answer_4"
-            android:inputType="text" />
-    </android.support.design.widget.TextInputLayout>
-
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/qie_til_points"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/qie_til_answer_4">
-
-        <android.support.design.widget.TextInputEditText
-            android:id="@+id/qie_et_points"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/points_for_answer"
-            android:inputType="numberDecimal" />
-    </android.support.design.widget.TextInputLayout>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/qie_btn_delete"
@@ -160,9 +26,80 @@
         android:background="@color/red"
         android:drawableStart="@drawable/ic_delete"
         android:paddingStart="3dp"
-        app:layout_constraintBottom_toBottomOf="@+id/qie_til_question"
+        app:layout_constraintBottom_toBottomOf="@+id/qie_tv_question"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/qie_til_question"
-        app:layout_constraintTop_toTopOf="@+id/qie_til_question" />
+        app:layout_constraintStart_toEndOf="@+id/qie_tv_question"
+        app:layout_constraintTop_toTopOf="@+id/qie_tv_question" />
+
+    <TextView
+        android:id="@+id/qie_tv_answer1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:text="TextView"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/qie_tv_question" />
+
+    <TextView
+        android:id="@+id/qie_tv_answer2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="TextView"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/qie_tv_answer1" />
+
+    <TextView
+        android:id="@+id/qie_tv_answer3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="TextView"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/qie_tv_answer2" />
+
+    <TextView
+        android:id="@+id/qie_tv_answer4"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="TextView"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/qie_tv_answer3" />
+
+    <TextView
+        android:id="@+id/textView13"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:text="Točan odgovor nosi:"
+        app:layout_constraintEnd_toStartOf="@+id/qie_tv_points"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/qie_tv_answer4" />
+
+    <TextView
+        android:id="@+id/qie_tv_points"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/textView13"
+        app:layout_constraintTop_toBottomOf="@+id/qie_tv_answer4" />
+
 </android.support.constraint.ConstraintLayout>

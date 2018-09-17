@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -95,6 +96,16 @@ public class DashboardActivity extends AppCompatActivity
     public void onUserUpdateListener(User updatedUser) {
         mAuthdUser = updatedUser;
         mSharedPrefs.setAuthenticatedUserInfo(mAuthdUser);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 100) {
+            if (resultCode == RESULT_OK) {
+                Toast.makeText(this, "Kviz je uspješno dodan, osvježite podatke",
+                        Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
 

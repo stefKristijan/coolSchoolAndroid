@@ -4,10 +4,11 @@ import android.annotation.SuppressLint;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
 
-public class Quiz {
+public class Quiz implements Serializable{
     private Long quizId;
     @JsonFormat(pattern = "dd.MM.yyyy.")
     private Date creationTime;
@@ -18,7 +19,7 @@ public class Quiz {
     private String name;
     private String description;
     private int classNum;
-    private SchoolType schoolType;
+    private SchoolType schoolType = SchoolType.ELEMENTARY_SCHOOL;
     private Subject subject;
     private Float maxPoints;
     private int difficulty;
@@ -37,6 +38,16 @@ public class Quiz {
         this.maxPoints = maxPoints;
         this.difficulty = difficulty;
         this.enabled = enabled;
+    }
+
+    public Quiz(String name, String description, int classNum, Subject subject, Float maxPoints, int difficulty, Set<Question> questions) {
+        this.name = name;
+        this.description = description;
+        this.classNum = classNum;
+        this.subject = subject;
+        this.maxPoints = maxPoints;
+        this.difficulty = difficulty;
+        this.questions = questions;
     }
 
     public Quiz() {
