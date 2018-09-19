@@ -10,8 +10,10 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.LayoutManager;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.abdularis.civ.CircleImageView;
 
@@ -35,7 +37,7 @@ public class QuizSubmitActivity extends AppCompatActivity {
     private Quiz mQuiz;
     private String mCookie;
     private CircleImageView civSubject;
-    private TextView tvTitle, tvDescription, tvPoints, tvDifficulty, tvTimeLeft;
+    private TextView tvTitle, tvDescription, tvPoints, tvDifficulty, tvTimeLeft, tvTimePoints;
     private Button btnSubmit;
 
     private RecyclerView rvQuestions;
@@ -63,7 +65,7 @@ public class QuizSubmitActivity extends AppCompatActivity {
         rvQuestions.setLayoutManager(mLayoutManager);
         rvQuestions.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
         rvQuestions.setItemAnimator(new DefaultItemAnimator());
-        mAdapter = new SubmitQuestionAdapter(new ArrayList<>(mQuiz.getQuestions()));
+        mAdapter = new SubmitQuestionAdapter(new ArrayList<>(mQuiz.getQuestions()), this);
         rvQuestions.setAdapter(mAdapter);
         civSubject = findViewById(R.id.qs_image);
         tvDescription = findViewById(R.id.qs_tv_description);
@@ -71,6 +73,7 @@ public class QuizSubmitActivity extends AppCompatActivity {
         tvPoints = findViewById(R.id.qs_tv_points);
         tvTitle = findViewById(R.id.qs_tv_title);
         tvTimeLeft = findViewById(R.id.qs_tv_time_left);
+        tvTimePoints = findViewById(R.id.qs_tv_time_points);
         tvTitle.setText(mQuiz.getName());
         tvDescription.setText(mQuiz.getDescription());
         tvDifficulty.setText(mQuiz.getDifficultyText());
@@ -164,16 +167,18 @@ public class QuizSubmitActivity extends AppCompatActivity {
             @SuppressLint("DefaultLocale")
             public void onTick(long millisUntilFinished) {
                 fullTime += 1;
-                if (millisUntilFinished > 60 * 1000) {
+                Log.d("MILISECONDDS", String.valueOf(millisUntilFinished));
+                if (millisUntilFinished > (60 * 1000)) {
+                    Log.d("MILISECONDDS", String.valueOf(millisUntilFinished));
                     tvTimeLeft.setText(
-                            String.format("%02d:%02d",
+                            String.format("%d:%d",
                                     ((millisUntilFinished / (1000 * 60)) % 60),
                                     (millisUntilFinished / 1000) % 60
                             )
                     );
                 } else {
                     tvTimeLeft.setTextColor(getResources().getColor(R.color.red));
-                    tvTimeLeft.setText(String.format("%02d sekindi", millisUntilFinished / 60));
+                    tvTimeLeft.setText(String.format("%d sekundi", millisUntilFinished / 1000));
                 }
             }
 
@@ -194,10 +199,17 @@ public class QuizSubmitActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<QuizReport> call, Response<QuizReport> response) {
                 if (response.isSuccessful()) {
-
-                } else {
+                    QuizReport quizReport = response.body();
+                    mAdapter.setmSolutions(quizReport.getSolutions());
+                    tvTimeLeft.setText(String.valueOf(quizReport.getPoints()));
+                    btnSubmit.setVisibility(View.GONE);
+                    tvTimePoints.setText("Ostvareni bodovi:");
+                } else if(response.code() == 500){
                     Log.e("ERROR", response.toString());
-                    // TODO - add toast od something (or not because there will always be a response)
+                    Toast.makeText(getApplicationContext(), "Ovaj test ste već rješavali!", Toast.LENGTH_SHORT).show();
+                    finish();
+                }else{
+                    finish();
                 }
             }
 

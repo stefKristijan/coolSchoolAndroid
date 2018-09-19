@@ -28,6 +28,7 @@ public class SharedPrefsHelper {
     }
 
     public void setAuthenticatedUserInfo(User user) {
+        editor = sharedPreferences.edit();
         String userJson = mGson.toJson(user);
         editor.putString(USER_KEY, userJson);
         editor.apply();
