@@ -91,7 +91,6 @@ public class QuizFragment extends Fragment {
         return layout;
     }
 
-    //TODO - on first fetch (if student - fetch only for his class)
     @SuppressLint("RestrictedApi")
     private void setUpUI(View layout) {
         rvQuizzes = layout.findViewById(R.id.quizfr_rv);

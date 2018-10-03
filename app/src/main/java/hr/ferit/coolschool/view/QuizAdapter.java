@@ -17,6 +17,7 @@ import java.util.List;
 import hr.ferit.coolschool.R;
 import hr.ferit.coolschool.activity.QuizSubmitActivity;
 import hr.ferit.coolschool.model.Quiz;
+import hr.ferit.coolschool.model.Role;
 import hr.ferit.coolschool.model.Subject;
 import hr.ferit.coolschool.utils.SharedPrefsHelper;
 
@@ -51,17 +52,19 @@ public class QuizAdapter extends RecyclerView.Adapter<QuizAdapter.QuizViewHolder
         setSubjectPicture(quiz.getSubject(), quizViewHolder);
         setDifficultyColor(quiz.getDifficulty(), quizViewHolder);
 
-        quizViewHolder.mainLayout.setOnClickListener(v ->{
+        quizViewHolder.mainLayout.setOnClickListener(v -> {
             SharedPrefsHelper sp = new SharedPrefsHelper(mContext);
-            Intent intent = new Intent(mContext, QuizSubmitActivity.class);
-            intent.putExtra(QUIZ_KEY, quiz);
-            intent.putExtra(COOKIE_KEY, sp.getCookie());
-            mContext.startActivity(intent);
+            if (sp.getAuthenticatedUserInfo().getRole().equals(Role.ROLE_STUDENT)) {
+                Intent intent = new Intent(mContext, QuizSubmitActivity.class);
+                intent.putExtra(QUIZ_KEY, quiz);
+                intent.putExtra(COOKIE_KEY, sp.getCookie());
+                mContext.startActivity(intent);
+            }
         });
     }
 
     private void setSubjectPicture(Subject subject, QuizViewHolder quizViewHolder) {
-        switch (subject){
+        switch (subject) {
             case Biologija:
                 quizViewHolder.civSubject.setImageResource(R.mipmap.biology);
                 break;

@@ -13,6 +13,8 @@ import android.support.v7.widget.RecyclerView.LayoutManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -99,7 +101,6 @@ public class QuizInsertActivity extends AppCompatActivity {
         });
         btnSave = findViewById(R.id.qie_btn_save);
         btnSave.setOnClickListener(v -> {
-            //TODO - validate fields and everything
             Subject subject = null;
             for (Subject subject1 : Subject.values()) {
                 if (subject1.equals(Subject.valueOf((String) spSubject.getSelectedItem()))) {
@@ -107,12 +108,19 @@ public class QuizInsertActivity extends AppCompatActivity {
                     break;
                 }
             }
-            Quiz newQuiz = new Quiz(etTitle.getText().toString(), etDescription.getText().toString(),
-                    spClass.getSelectedItemPosition()+1, subject,
-                    Float.valueOf(tvSumPoints.getText().toString()),
-                    spDifficulty.getSelectedItemPosition()+1,
-                    new HashSet<>(mQuestions));
-            saveQuizToServer(newQuiz);
+            String name = etTitle.getText().toString();
+            String description = etDescription.getText().toString();
+            String points = etSumPoints.getText().toString();
+            if(name.isEmpty() || points.isEmpty()){
+                Toast.makeText(getApplicationContext(), "Ime kviza i ukupan broj bodova" +
+                        " ne smiju biti prazni", Toast.LENGTH_SHORT).show();
+            }else {
+                Quiz newQuiz = new Quiz(name, description,
+                        spClass.getSelectedItemPosition() + 1, subject,
+                        Float.valueOf(points), spDifficulty.getSelectedItemPosition() + 1,
+                        new HashSet<>(mQuestions));
+                saveQuizToServer(newQuiz);
+            }
         });
 
         etQuestion = findViewById(R.id.qie_et_question);
@@ -126,17 +134,31 @@ public class QuizInsertActivity extends AppCompatActivity {
         rbAnswer3 = findViewById(R.id.qie_rb_answer_3);
         rbAnswer4 = findViewById(R.id.qie_rb_answer_4);
         btnAddQuestion = findViewById(R.id.qie_btn_save_question);
-        btnAddQuestion.setOnClickListener(v ->{
-            Question question = new Question(etQuestion.getText().toString(), null, null);
-            Set<Answer> answers = new HashSet<>();
-            float points = Float.valueOf(etPoints.getText().toString());
-            answers.add(newAnswer(etAnswer1,rbAnswer1,points));
-            answers.add(newAnswer(etAnswer2,rbAnswer2,points));
-            answers.add(newAnswer(etAnswer3,rbAnswer3,points));
-            answers.add(newAnswer(etAnswer4,rbAnswer4,points));
-            question.setAnswers(answers);
-            mQuestions.add(question);
-            mQAAdapter.notifyDataSetChanged();
+        btnAddQuestion.setOnClickListener(v -> {
+            String questionStr = etQuestion.getText().toString().trim();
+            if (questionStr.isEmpty()) {
+                Toast.makeText(getApplicationContext(), "Pitanje mora biti ispunjeno", Toast.LENGTH_SHORT).show();
+            } else {
+                Question question = new Question(etQuestion.getText().toString(), null, null);
+                Set<Answer> answers = new HashSet<>();
+                String pointsStr = etPoints.getText().toString();
+                if(!pointsStr.isEmpty()){
+                    float points = Float.valueOf(pointsStr);
+                    try {
+                        answers.add(newAnswer(etAnswer1, rbAnswer1, points));
+                        answers.add(newAnswer(etAnswer2, rbAnswer2, points));
+                        answers.add(newAnswer(etAnswer3, rbAnswer3, points));
+                        answers.add(newAnswer(etAnswer4, rbAnswer4, points));
+                        question.setAnswers(answers);
+                        mQuestions.add(question);
+                        mQAAdapter.notifyDataSetChanged();
+                    } catch (Exception e) {
+                        Toast.makeText(getApplicationContext(), "Jedan ili više odgovora je prazno", Toast.LENGTH_SHORT).show();
+                    }
+                }else{
+                    Toast.makeText(getApplicationContext(), "Unesite broj bodova za točan odgovor", Toast.LENGTH_SHORT).show();
+                }
+            }
         });
 
         tilTitle = findViewById(R.id.qie_til_title);
@@ -175,31 +197,52 @@ public class QuizInsertActivity extends AppCompatActivity {
     }
 
     private void saveQuizToServer(Quiz newQuiz) {
-        Call<Quiz> call = RetrofitImpl.getQuizService().insertQuiz(mCookie, newQuiz);
-
-        call.enqueue(new Callback<Quiz>() {
-            @Override
-            public void onResponse(Call<Quiz> call, Response<Quiz> response) {
-                if (response.isSuccessful()) {
-                    Intent intent = new Intent();
-                    setResult(RESULT_OK, intent);
-                    finish();
-                } else {
-                    Log.e("ERROR", response.toString());
+        if(newQuiz.getQuestions().size()==0){
+            Toast.makeText(getApplicationContext(), "Unesite bar jedno pitanje s odgovorima",
+                    Toast.LENGTH_SHORT).show();
+        }else {
+            float sumPoints = 0;
+            for (Question question : newQuiz.getQuestions()) {
+                for (Answer answer : question.getAnswers()) {
+                    answer.setPoints(answer.getPoints() * spDifficulty.getSelectedItemPosition() + 1);
+                    sumPoints += answer.getPoints();
                 }
             }
+            if (sumPoints == newQuiz.getMaxPoints()) {
+                Call<Quiz> call = RetrofitImpl.getQuizService().insertQuiz(mCookie, newQuiz);
 
-            @Override
-            public void onFailure(Call<Quiz> call, Throwable t) {
-                Toast.makeText(getApplicationContext(), DEFAULT_ERROR, Toast.LENGTH_SHORT).show();
-                Log.e("ERROR", t.toString());
+                call.enqueue(new Callback<Quiz>() {
+                    @Override
+                    public void onResponse(Call<Quiz> call, Response<Quiz> response) {
+                        if (response.isSuccessful()) {
+                            Intent intent = new Intent();
+                            setResult(RESULT_OK, intent);
+                            finish();
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Dogodila se pogreška pri " +
+                                    "stvaranju novog kviza", Toast.LENGTH_SHORT).show();
+                            Log.e("ERROR", response.toString());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Quiz> call, Throwable t) {
+                        Toast.makeText(getApplicationContext(), DEFAULT_ERROR, Toast.LENGTH_SHORT).show();
+                        Log.e("ERROR", t.toString());
+                    }
+                });
             }
-        });
+        }
     }
 
-    private Answer newAnswer(EditText etAnswer, RadioButton rbAnswer, float points) {
-        return new Answer(etAnswer.getText().toString(), rbAnswer.isChecked(),
-                rbAnswer.isChecked() ? points : 0, null);
+    private Answer newAnswer(EditText etAnswer, RadioButton rbAnswer, float points) throws Exception {
+        String answer = etAnswer.getText().toString().trim();
+        if (answer.isEmpty()) {
+            throw new Exception();
+        } else {
+            return new Answer(answer, rbAnswer.isChecked(),
+                    rbAnswer.isChecked() ? points : 0, null);
+        }
     }
 
     private void setUpSpinners() {
@@ -225,5 +268,20 @@ public class QuizInsertActivity extends AppCompatActivity {
         ArrayAdapter<String> difficulties = new ArrayAdapter<>(
                 this, android.R.layout.simple_spinner_dropdown_item, difficultiesList);
         spDifficulty.setAdapter(difficulties);
+        spDifficulty.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String points = etSumPoints.getText().toString().trim();
+                if (!points.isEmpty()) {
+                    tvSumPoints.setText(String.valueOf(
+                            Float.valueOf(points) * (spDifficulty.getSelectedItemPosition() + 1)));
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 }
