@@ -37,6 +37,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static hr.ferit.coolschool.utils.Constants.DEFAULT_ERROR;
 import static hr.ferit.coolschool.utils.Constants.EMAIL_REGEX;
 import static hr.ferit.coolschool.utils.Constants.NAME_REGEX;
 import static hr.ferit.coolschool.utils.Constants.REGISTRATION_ACTY_BOOL_EXTRA;
@@ -177,22 +178,31 @@ public class RegistrationActivity extends AppCompatActivity {
                 @Override
                 public void onResponse(Call<User> call, Response<User> response) {
                     if (response.isSuccessful()) {
-                        Toast.makeText(getApplicationContext(), "Uspješna registracija", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Uspješna registracija",
+                                Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
                     } else {
                         Log.e("ERROR", response.toString());
-                        // TODO - add toast od something (or not because there will always be a response)
+                        Toast.makeText(getApplicationContext(), "Registracija nije uspjela",
+                                Toast.LENGTH_SHORT). show();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<User> call, Throwable t) {
                     Log.e("ERROR", t.toString());
+                    showDefaultError();
                 }
             });
         }
     }
+
+    private void showDefaultError() {
+        Toast.makeText(getApplicationContext(), DEFAULT_ERROR, Toast.LENGTH_SHORT).show();
+    }
+
 
     private User getUserFromFields() {
         String firstName = etName.getText().toString();

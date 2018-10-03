@@ -1,7 +1,6 @@
 package hr.ferit.coolschool.model;
 
 public class Rank {
-    private Long id;
     private String username;
     private float points;
     private String schoolName;

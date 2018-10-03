@@ -36,7 +36,7 @@ public class RankAdapter extends RecyclerView.Adapter<RankAdapter.RankViewHolder
         Rank rank = mRanks.get(i);
         rankViewHolder.tvTitle.setText(rank.getUsername());
         rankViewHolder.tvPoints.setText(String.valueOf(rank.getPoints()));
-        rankViewHolder.tvPosition.setText(String.valueOf(i + 1));
+        rankViewHolder.tvPosition.setText(String.valueOf(i + 1)+".");
     }
 
     @Override

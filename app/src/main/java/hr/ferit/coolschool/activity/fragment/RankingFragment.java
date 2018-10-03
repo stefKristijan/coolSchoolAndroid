@@ -41,7 +41,6 @@ import static hr.ferit.coolschool.utils.Constants.getSpinnerSubjects;
 
 public class RankingFragment extends Fragment {
 
-    //    private OnFragmentInteractionListener mListener;
     private User mAuthUser;
     private String mCookie;
 
@@ -80,7 +79,6 @@ public class RankingFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View layout = inflater.inflate(R.layout.fragment_ranking, container, false);
         setUpUI(layout);
         fetchRankingList(null, null, null, null);
@@ -145,10 +143,8 @@ public class RankingFragment extends Fragment {
                     mRanks.clear();
                     mRanks.addAll(response.body());
                     mRankAdapter.notifyDataSetChanged();
-                    updateCurrentPositionText();
                 } else {
                     Log.e("ERROR", response.toString());
-                    // TODO - add toast od something (or not because there will always be a response)
                 }
             }
 
@@ -158,15 +154,6 @@ public class RankingFragment extends Fragment {
                 Toast.makeText(getContext(), DEFAULT_ERROR, Toast.LENGTH_SHORT).show();
             }
         });
-    }
-
-    private void updateCurrentPositionText() {
-        for (int i = 0; i<mRanks.size(); i++) {
-            Rank rank = mRanks.get(i);
-            if (rank.getUsername().equals(mAuthUser.getUsername())) {
-                tvCurrentPosition.setText(getResources().getString(R.string.tv_current_position, (i+1)));
-            }
-        }
     }
 
     private void fetchSchoolNamesList() {
@@ -180,7 +167,7 @@ public class RankingFragment extends Fragment {
             @Override
             public void onResponse(Call<List<School>> call, Response<List<School>> response) {
                 if (response.isSuccessful()) {
-                    schoolNames.add("-");
+                    schoolNames.add(" ");
                     if (response.body().size() > 0) {
                         for (School school : response.body()) {
                             mSchools.add(school);

@@ -3,7 +3,6 @@ package hr.ferit.coolschool.activity.fragment;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -25,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import hr.ferit.coolschool.R;
-import hr.ferit.coolschool.activity.QuizInsertUpdateActivity;
+import hr.ferit.coolschool.activity.QuizInsertActivity;
 import hr.ferit.coolschool.model.Quiz;
 import hr.ferit.coolschool.model.Role;
 import hr.ferit.coolschool.model.SchoolType;
@@ -47,7 +46,6 @@ import static hr.ferit.coolschool.utils.Constants.getSpinnerSubjects;
 
 public class QuizFragment extends Fragment {
 
-    //    private OnFragmentInteractionListener mListener;
     private User mAuthUser;
     private boolean isStudent;
     private String mCookie;
@@ -93,11 +91,13 @@ public class QuizFragment extends Fragment {
         return layout;
     }
 
+    //TODO - on first fetch (if student - fetch only for his class)
     @SuppressLint("RestrictedApi")
     private void setUpUI(View layout) {
         rvQuizzes = layout.findViewById(R.id.quizfr_rv);
         fabNewQuiz = layout.findViewById(R.id.quizfr_fab_add);
         ArrayAdapter<String> subjects;
+        Subject mainSubject = null;
         if (isStudent) {
             fabNewQuiz.setVisibility(View.GONE);
             subjects = new ArrayAdapter<>(
@@ -106,6 +106,7 @@ public class QuizFragment extends Fragment {
             List<String> subjectsStrings = new ArrayList<>();
             for (UserSchool userSchool : mAuthUser.getUserSchools()) {
                 subjectsStrings.add(userSchool.getSubject().toString());
+                mainSubject = userSchool.getSubject();
             }
             subjects = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, subjectsStrings);
         }
@@ -118,7 +119,7 @@ public class QuizFragment extends Fragment {
         spClass = layout.findViewById(R.id.quizfr_sp_class);
         btnSearch = layout.findViewById(R.id.quizfr_btn_search);
         fetchQuizList(null, null,
-                isStudent ? null : mAuthUser.getUserSchools().iterator().next().getSubject());
+                isStudent ? null : mainSubject);
         ArrayAdapter<String> classes = new ArrayAdapter<>(
                 getActivity(), android.R.layout.simple_spinner_dropdown_item, getClassList());
         spClass.setAdapter(classes);
@@ -157,7 +158,7 @@ public class QuizFragment extends Fragment {
     }
 
     private void startInsertAndUpdateActivity() {
-        Intent intent = new Intent(getActivity(), QuizInsertUpdateActivity.class);
+        Intent intent = new Intent(getActivity(), QuizInsertActivity.class);
         intent.putExtra(USER_KEY, mAuthUser);
         intent.putExtra(COOKIE_KEY, mCookie);
         getActivity().startActivityForResult(intent, 100);
@@ -177,9 +178,6 @@ public class QuizFragment extends Fragment {
                     mQuizzes.clear();
                     mQuizzes.addAll(response.body());
                     mQuizAdapter.notifyDataSetChanged();
-                } else {
-                    Log.e("ERROR", response.toString());
-                    // TODO - add toast od something (or not because there will always be a response)
                 }
             }
 
@@ -194,22 +192,11 @@ public class QuizFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-//        if (context instanceof OnFragmentInteractionListener) {
-//            mListener = (OnFragmentInteractionListener) context;
-//        } else {
-//            throw new RuntimeException(context.toString()
-//                    + " must implement OnFragmentInteractionListener");
-//        }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-//        mListener = null;
     }
 
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
-    }
 }

@@ -19,6 +19,7 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -39,12 +40,13 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static hr.ferit.coolschool.utils.Constants.COOKIE_KEY;
+import static hr.ferit.coolschool.utils.Constants.DEFAULT_ERROR;
 import static hr.ferit.coolschool.utils.Constants.QUIZ_KEY;
 import static hr.ferit.coolschool.utils.Constants.USER_KEY;
 import static hr.ferit.coolschool.utils.Constants.getClassList;
 import static hr.ferit.coolschool.utils.Constants.getDifficulties;
 
-public class QuizInsertUpdateActivity extends AppCompatActivity {
+public class QuizInsertActivity extends AppCompatActivity {
 
     private List<Question> mQuestions;
     private Quiz mQuiz;
@@ -184,12 +186,12 @@ public class QuizInsertUpdateActivity extends AppCompatActivity {
                     finish();
                 } else {
                     Log.e("ERROR", response.toString());
-                    // TODO - add toast od something (or not because there will always be a response)
                 }
             }
 
             @Override
             public void onFailure(Call<Quiz> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), DEFAULT_ERROR, Toast.LENGTH_SHORT).show();
                 Log.e("ERROR", t.toString());
             }
         });

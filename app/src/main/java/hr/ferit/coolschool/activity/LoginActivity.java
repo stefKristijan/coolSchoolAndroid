@@ -23,7 +23,6 @@ import static hr.ferit.coolschool.utils.Constants.LOGIN_FAIL;
 import static hr.ferit.coolschool.utils.Constants.USER_KEY;
 
 public class LoginActivity extends AppCompatActivity {
-    //TODO - put link in About or somewhere
 
     private static final String EMPTY_FIELDS = "Unesite podatke za prijavu";
     private Button btnLogin, btnStudentReg, btnTeacherReg;

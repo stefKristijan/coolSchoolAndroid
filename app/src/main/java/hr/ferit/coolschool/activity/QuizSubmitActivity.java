@@ -167,18 +167,16 @@ public class QuizSubmitActivity extends AppCompatActivity {
             @SuppressLint("DefaultLocale")
             public void onTick(long millisUntilFinished) {
                 fullTime += 1;
-                Log.d("MILISECONDDS", String.valueOf(millisUntilFinished));
                 if (millisUntilFinished > (60 * 1000)) {
-                    Log.d("MILISECONDDS", String.valueOf(millisUntilFinished));
                     tvTimeLeft.setText(
-                            String.format("%d:%d",
+                            String.format("%02d:%02d",
                                     ((millisUntilFinished / (1000 * 60)) % 60),
                                     (millisUntilFinished / 1000) % 60
                             )
                     );
                 } else {
                     tvTimeLeft.setTextColor(getResources().getColor(R.color.red));
-                    tvTimeLeft.setText(String.format("%d sekundi", millisUntilFinished / 1000));
+                    tvTimeLeft.setText(String.format("%02d sekundi", millisUntilFinished / 1000));
                 }
             }
 
@@ -206,7 +204,8 @@ public class QuizSubmitActivity extends AppCompatActivity {
                     tvTimePoints.setText("Ostvareni bodovi:");
                 } else if(response.code() == 500){
                     Log.e("ERROR", response.toString());
-                    Toast.makeText(getApplicationContext(), "Ovaj test ste već rješavali!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Ovaj test ste već rješavali!",
+                            Toast.LENGTH_SHORT).show();
                     finish();
                 }else{
                     finish();

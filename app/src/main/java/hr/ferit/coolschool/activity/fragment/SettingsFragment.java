@@ -39,6 +39,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static hr.ferit.coolschool.utils.Constants.COOKIE_KEY;
+import static hr.ferit.coolschool.utils.Constants.DEFAULT_ERROR;
 import static hr.ferit.coolschool.utils.Constants.EMAIL_REGEX;
 import static hr.ferit.coolschool.utils.Constants.NAME_REGEX;
 import static hr.ferit.coolschool.utils.Constants.USERNAME_REGEX;
@@ -289,16 +290,15 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
                         resetLayoutValues();
                         mUserUpdateListener.onUserUpdateListener(mAuthUser);
                     }
-                    //TODO - call on update listener
                 } else {
                     Log.e("ERROR", response.toString());
-                    // TODO - add toast od something (or not because there will always be a response)
                 }
             }
 
             @Override
             public void onFailure(Call<User> call, Throwable t) {
                 Log.e("ERROR", t.toString());
+                Toast.makeText(getActivity(), DEFAULT_ERROR, Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -320,12 +320,12 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
                     }
                 } else {
                     Log.e("ERROR", response.toString());
-                    // TODO - add toast od something (or not because there will always be a response)
                 }
             }
 
             @Override
             public void onFailure(Call<Boolean> call, Throwable t) {
+                Toast.makeText(getActivity(), DEFAULT_ERROR, Toast.LENGTH_SHORT).show();
                 Log.e("ERROR", t.toString());
             }
         });

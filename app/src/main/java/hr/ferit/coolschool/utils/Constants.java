@@ -12,7 +12,7 @@ import static java.util.Arrays.asList;
 public class Constants {
 
     public static final String REGISTRATION_ACTY_BOOL_EXTRA = "isStudent";
-    public static final String DEFAULT_ERROR = "Došlo je do pogreške. Pokušajte ponovno kasnije.";
+    public static final String DEFAULT_ERROR = "Poslužitelj je nedostupan. Pokušajte ponovno kasnije.";
     public static final String USER_KEY = "user";
     public static final String COOKIE_KEY = "cookie";
     public static final String QUIZ_KEY = "quiz";
@@ -62,7 +62,7 @@ public class Constants {
 
     public static List<String> getSpinnerStates() {
         List<String> subjects = new ArrayList<>();
-        subjects.add("-");
+        subjects.add(" ");
         for (State state : State.values()) {
             subjects.add(state.getValue());
         }
@@ -71,7 +71,7 @@ public class Constants {
 
     public static List<String> getSpinnerCities() {
         List<String> cities = new ArrayList<>();
-        cities.add("-");
+        cities.add(" ");
         for (City city : City.values()) {
             cities.add(city.toString());
         }

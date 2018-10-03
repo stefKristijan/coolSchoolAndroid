@@ -56,7 +56,6 @@ public class DashboardActivity extends AppCompatActivity
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
         mViewPager = findViewById(R.id.container);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
         setUpViewPager();
 
         tabs = findViewById(R.id.tabs);
